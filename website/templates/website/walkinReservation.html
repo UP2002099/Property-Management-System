@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>PMS | Index page</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- bootstrap css and icons CDN are located in navbar.html -->
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- navigation bar here -->
+                {% block nav %}{% include 'navbar.html' %}{% endblock nav %}
+                
+                <!-- page content -->
+                <div class="col-10" style="padding: 1rem;" id="maxHeight">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex justify-content-center">
+                                <h1 class="page-header">Walk-in Reservation</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex justify-content-evenly">
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label">First name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="firstName" aria-describedby="basic-addon3" placeholder="Enter first name">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="lastName" class="form-label">Last name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="lastName" aria-describedby="basic-addon3" placeholder="Enter last name">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="arrivalDate" class="form-label">Arrival date</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="arrivalDate" aria-label="disabled input" value="{{currentDate}}" disabled readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex justify-content-evenly">
+                                <div class="mb-3">
+                                    <label for="numGuestInput" class="form-label">Number of guests</label>
+                                    <!-- bind datalist to input by using the same input list and datalist id -->
+                                    <input class="form-control" list="numGuestOptions" id="numGuestInput" placeholder="Type to search...">
+                                    <datalist id="numGuestOptions">
+                                        <option value="1"></option>
+                                        <option value="2"></option>
+                                        <option value="3"></option>
+                                        <option value="4"></option>
+                                        <option value="5"></option>
+                                        <option value="6"></option>
+                                        <option value="7"></option>
+                                        <option value="8"></option>
+                                        <option value="9"></option>
+                                        <option value="10"></option>
+                                    </datalist>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="roomTypeInput" class="form-label">Room type</label>
+                                    <select class="form-select" id="roomTypeInput">
+                                        <option selected>Choose...</option>
+                                        <option value="Single room">Single room</option>
+                                        <option value="Deluxe single room">Deluxe single room</option>
+                                        <option value="Twin room">Twin room</option>
+                                        <option value="Deluxe twin room">Deluxe twin room</option>
+                                      </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="numRoomsInput" class="form-label">Number of rooms</label>
+                                    <input class="form-control" list="numRooms" id="numRoomsInput" placeholder="Type to search...">
+                                    <datalist id="numRooms">
+                                        <option value="1"></option>
+                                        <option value="2"></option>
+                                        <option value="3"></option>
+                                        <option value="4"></option>
+                                        <option value="5"></option>
+                                    </datalist>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="departureDateInput" class="form-label">Departure date</label>
+                                    <input class="form-control" id="departureDateInput" type="date">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex justify-content-evenly">
+                                <div class="mb-3">
+                                    <h3>Payment method</h3>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="paymentCreditDebit">
+                                        <label class="form-check-label" for="paymentCreditDebit">
+                                            Credit/Debit
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="paymentQrPromptpay">
+                                        <label class="form-check-label" for="paymentQrPromptpay">
+                                            QR/Promptpay
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="paymentCash">
+                                        <label class="form-check-label" for="paymentCash">
+                                            Cash
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex justify-content-evenly">
+                                <div class="mb-3">
+                                    <h3>Total payment</h3>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text fs-4" id="paymentAmount"><b>฿‎</b></span>
+                                        <input type="text" class="form-control" aria-describedby="paymentAmount" value="paymentAmount" disabled readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex justify-content-evenly">
+                                <div class="mb-3">
+                                    <h3>Transaction slip</h3>
+                                    <div class="input-group mb-3">
+                                        <input type="file" class="form-control" id="uploadTransaction">
+                                        <label class="input-group-text" for="uploadTransaction">Upload</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex justify-content-evenly">
+                                <button type="button" class="btn btn-primary fs-3">Submit form</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
