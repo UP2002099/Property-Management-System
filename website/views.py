@@ -45,8 +45,8 @@ def build():
     return websites
 
 # template views
-def navbar(request):
-    return render(request, 'navbar.html')
+def baseTemplate(request):
+    return render(request, 'base.html')
 
 def index(request):
     #2 get this month's revenue statistics (line graph)
@@ -69,6 +69,6 @@ def walkinReservation(request):
 
 def quotaConditions(request):
     context = {
-        'bookingWebsiteNames': bookingWebsiteNames(),
+        'websites': websites,
     }
     return render(request, 'quotaConditions.html', context)

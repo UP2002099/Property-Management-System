@@ -27,9 +27,10 @@ $(document).ready(function() {
         }
     });
 
-    $("#editWebsite2").click(function() {
-        $("#website2").toggle();
+    $("#editWebsite").click(function() {
+        // $("#website2").toggle();
         $("#editQuotaConditions").toggle();
+
     });
     
 });

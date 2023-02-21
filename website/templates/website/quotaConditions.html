@@ -1,153 +1,128 @@
+{% extends 'website/baseTemplate.html' %}
 {% load static %}
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>PMS | Index page</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- bootstrap css and icons CDN are located in navbar.html -->
-        <!-- chart.js -->
-        <link rel="stylesheet" href="https://www.jsdelivr.com/package/npm/chart.js?path=dist">
-        <!-- view specific js -->
-        <link rel="script" href="{% static 'website/style.css' %}">
-    </head>
-    <body>
-        <div class="container-fluid">
-            <div class="row">
-                <!-- navigation bar here -->
-                {% block nav %}{% include 'navbar.html' %}{% endblock nav %}
-                
-                <!-- page content -->
-                
-                <!-- room breakdown and price range -->
-                <div class="col-5" style="padding: 1rem;" id="navbar">
-                    <div class="row">
-                        <div class="col">
-                            <div class="d-flex justify-content-center">
-                                <h1 class="page-header">Room breakdown and price range</h1>
+
+{% block content %}
+    <!-- page content -->
+    
+    <!-- room breakdown and price range -->
+    <div class="col-5" style="padding: 1rem;" id="navbar">
+        <div class="row">
+            <div class="col">
+                <div class="d-flex justify-content-center">
+                    <h1 class="page-header">Room breakdown and price range</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- quota and conditions -->
+    <div class="col-5" style="padding: 1rem;">
+        <div class="row">
+            <div class="col justify-content-center">
+                <div class="card" id="quotaConditionsCard">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex justify-content-center">
+                                    <h1 class="pageHeader">Quota and conditions</h1>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- quota and conditions -->
-                <div class="col-5" style="padding: 1rem;">
-                    <div class="row">
-                        <div class="col justify-content-center">
-                            <div class="card" id="quotaConditionsCard">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="d-flex justify-content-center">
-                                                <h1 class="pageHeader">Quota and conditions</h1>
-                                            </div>
-                                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>Room inventory: 
+                                    <span class="badge rounded-pill text-bg-info">num rooms</span>
+                                </h6>
+                            </div>
+                        </div>
+                        <!-- third party website conditions -->
+                        <!-- <div class="card mb-3">
+                            <div class="card-body" id="roomConditions">
+                                <div class="row">
+                                    <div class="col">
+                                        <h4 class="card-title">1. Booking.com</h4>
                                     </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <h6>Room inventory: 
-                                                <span class="badge rounded-pill text-bg-info">num rooms</span>
-                                            </h6>
-                                        </div>
+                                    <div class="col d-flex flex-column">
+                                        <h6>Allocated rooms: 
+                                            <span class="badge rounded-pill text-bg-info">num rooms</span>
+                                        </h6>
+                                        <h6>Condition: 
+                                            <span class="badge rounded-pill text-bg-info">condition</span>
+                                        </h6>
                                     </div>
-                                    <!-- third party website conditions -->
-                                    <!-- <div class="card mb-3">
-                                        <div class="card-body" id="roomConditions">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <h4 class="card-title">1. Booking.com</h4>
-                                                </div>
-                                                <div class="col d-flex flex-column">
-                                                    <h6>Allocated rooms: 
-                                                        <span class="badge rounded-pill text-bg-info">num rooms</span>
-                                                    </h6>
-                                                    <h6>Condition: 
-                                                        <span class="badge rounded-pill text-bg-info">condition</span>
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <h5 class="card-title">Allocated rooms:</h5>
-                                                </div>
-                                                <div class="col d-flex justify-content-end">
-                                                    <div class="input-group">
-                                                        <select class="form-select" id="roomQty">
-                                                            <option selected value="none">Choose...</option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                        </select>
-                                                        <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="rooms">Confirm</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row my-3">
-                                                <div class="col">
-                                                    <h5 class="card-title">Condition:</h5>
-                                                </div>
-                                                <div class="col d-flex justify-content-end">
-                                                    <div class="input-group">
-                                                        <select class="form-select" id="conditionSelect">
-                                                            <option selected value="none">Choose...</option>
-                                                            <option value="75">75% or more at quota</option>
-                                                            <option value="50">50% or more at quota</option>
-                                                            <option value="25">25% or more at quota</option>
-                                                            <option value="1room">At least 1 room available</option>
-                                                        </select>
-                                                        <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="condition">Confirm</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col d-flex justify-content-center">
-                                                    <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="condition">Save</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    <div class="card mb-3" id="website1">
-                                        <div class="card-body" id="roomConditions" style="padding-bottom: 0;">
-                                            {% for websiteNames in bookingWebsiteNames %}
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <h4 class="card-title">{{ websiteNames }}</h4>
-                                                    </div>
-                                                    <div class="col d-flex flex-column mb-3">
-                                                        <h6>Allocated rooms: 
-                                                            <span class="badge rounded-pill text-bg-info">num rooms</span>
-                                                        </h6>
-                                                        <h6>Condition: 
-                                                            <span class="badge rounded-pill text-bg-info">condition</span>
-                                                        </h6>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title">Allocated rooms:</h5>
                                     </div>
-                                    <a href="#" class="card-link d-flex justify-content-end" id="editWebsite2">Adjust quota and conditions</a>
-                                    <div class="row">
-                                        <div class="col" style="display: none;" id="editQuotaConditions">
-                                        {% block content %}
-                                        {% include 'editQuotaConditions.html' %}
-                                        {% endblock %}
+                                    <div class="col d-flex justify-content-end">
+                                        <div class="input-group">
+                                            <select class="form-select" id="roomQty">
+                                                <option selected value="none">Choose...</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                            <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="rooms">Confirm</button>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row my-3">
+                                    <div class="col">
+                                        <h5 class="card-title">Condition:</h5>
+                                    </div>
+                                    <div class="col d-flex justify-content-end">
+                                        <div class="input-group">
+                                            <select class="form-select" id="conditionSelect">
+                                                <option selected value="none">Choose...</option>
+                                                <option value="75">75% or more at quota</option>
+                                                <option value="50">50% or more at quota</option>
+                                                <option value="25">25% or more at quota</option>
+                                                <option value="1room">At least 1 room available</option>
+                                            </select>
+                                            <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="condition">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col d-flex justify-content-center">
+                                        <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="condition">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="card mb-3" id="website1">
+                            <div class="card-body" id="roomConditions" style="padding-bottom: 0;">
+                                {% for websiteNames in websites %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <h4 class="card-title">{{ websiteNames }}</h4>
+                                        </div>
+                                        <div class="col d-flex flex-column mb-3">
+                                            <h6>Allocated rooms: 
+                                                <span class="badge rounded-pill text-bg-info">num rooms</span>
+                                            </h6>
+                                            <h6>Condition: 
+                                                <span class="badge rounded-pill text-bg-info">condition</span>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <a href="#" class="card-link d-flex justify-content-end" id="editWebsite">Adjust quota and conditions</a>
+                        <div class="row">
+                            <div class="col" style="display: none;" id="editQuotaConditions">
+                            {% include 'editQuotaConditions.html' %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- script loader -->
-        <script type="text/javascript" src="{% static 'website/quotaConditions.js' %}"></script>
-    </body>
-</html>
+    </div>
+    <!-- script loader -->
+    <script type="text/javascript" src="{% static 'website/quotaConditions.js' %}"></script>
+{% endblock %}
