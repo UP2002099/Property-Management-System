@@ -1,8 +1,9 @@
 /* navbar.html */
-#navbar {
-    height: 100vh;
-    border-right-style: solid;
-    border-right-width: 1px;
+
+@media (min-width: 390px) {
+    .h-sm-100 {
+        height: 100%;
+    }
 }
 
 hr {
@@ -17,7 +18,7 @@ hr {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    height: 47vh;
+    height: 48vh;
 }
 
 #scroller {
@@ -31,4 +32,26 @@ hr {
     padding: 7px;
 }
 
-/* walkinReservation */
+/* quotaConditions */
+
+.btn-toggle {
+    --bs-btn-active-bg: #198754;
+    --bs-btn-active-border-color: #198754;
+    --bs-btn-hover-bg: #198754;
+    --bs-btn-hover-border-color: #198754;
+} 
+
+.pageHeader{
+    margin-bottom: 1rem;
+}
+
+#quotaConditionsCard {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+}
+
+#roomConditions {
+    padding: 1rem;
+}

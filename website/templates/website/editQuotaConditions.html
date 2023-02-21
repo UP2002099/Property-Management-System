@@ -1,0 +1,61 @@
+<div class="card mb-3">
+    <div class="card-body" id="roomConditions">
+        {% block content %}
+            {% for websiteNames in websites %}
+                <div class="row">
+                    <div class="col">
+                        <h4 class="card-title">{{ websiteNames }}</h4>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <h6>Allocated rooms: 
+                            <span class="badge rounded-pill text-bg-info">num rooms</span>
+                        </h6>
+                        <h6>Condition: 
+                            <span class="badge rounded-pill text-bg-info">condition</span>
+                        </h6>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Allocated rooms:</h5>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <div class="input-group">
+                                <select class="form-select" id="{}">
+                                    <option selected value="none">Choose...</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="rooms">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col">
+                            <h5 class="card-title">Condition:</h5>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <div class="input-group">
+                                <select class="form-select" id="conditionSelect">
+                                    <option selected value="none">Choose...</option>
+                                    <option value="75">75% or more at quota</option>
+                                    <option value="50">50% or more at quota</option>
+                                    <option value="25">25% or more at quota</option>
+                                    <option value="1room">At least 1 room available</option>
+                                </select>
+                                <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="condition">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+        {% endblock %}
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

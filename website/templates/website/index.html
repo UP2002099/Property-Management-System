@@ -14,43 +14,34 @@
         <link rel="stylesheet" href="https://www.jsdelivr.com/package/npm/chart.js?path=dist">
     </head>
     <body>
-        <div class="container-fluid">
-            <div class="row">
+        <div class="container-fluid overflow-hidden">
+            <div class="row vh-100 overflow-auto">
                 <!-- navigation bar here -->
-                {% block nav %}{% include 'navbar.html' %}{% endblock nav %}
-                
+                {% block nav %}{% include 'navbar.html' %}{% endblock nav %}   
+
                 <!-- page content -->
-                
-                <!-- arrival and departures -->
-                <div class="col-3" style="padding: 1rem;">
-                    <!-- arrivals card -->
-                    <div class="row">
-                        <div class="col">
+
+                <div class="col d-flex flex-column h-sm-100">
+                    <!-- check in and check out -->
+                    <main class="row overflow-auto">
+                        <div class="col pt-2">
+                            <!-- arrivals card -->
                             <div class="card" id="cardStyle">
                                 <div class="card-body">
                                     <!-- card header -->
                                     <div class="row">
                                         <div class="col">
-                                            <div class="row">
-                                                <h4 class="card-title">Today's arrivals</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="btn btn-success">
-                                                    <b>Total</b> <span class="badge text-bg-primary">10</span>
-                                                </button>
-                                            </div>
+                                            <button type="button" class="btn btn-info position-relative">
+                                                <h4 style="margin-bottom: 1px;">Check-in</h4>
+                                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill rounded-pill bg-danger">
+                                                    6
+                                                </span>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <h6 class="card-subtitle mb-2 text-muted">{{currentDate}}</h6>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <a href="#" class="card-link">View all</a>
-                                            </div>
+                                            <h6 class="card-subtitle mt-1 text-muted">{{currentDate}}</h6>
                                         </div>
                                     </div>
                                     <!-- guest info card -->
@@ -58,7 +49,7 @@
                                         <div class="card mb-3">
                                             <div class="card-body" id="guestCard">
                                                 <h5 class="card-title">Full name</h5>
-                                                <h6 class="card-title">Arrival - departure date</h6>
+                                                <h6 class="card-title">Departs: departure date</h6>
                                                 <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
                                                 <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
                                             </div>
@@ -66,7 +57,7 @@
                                         <div class="card mb-3">
                                             <div class="card-body" id="guestCard">
                                                 <h5 class="card-title">Full name</h5>
-                                                <h6 class="card-title">Arrival - departure date</h6>
+                                                <h6 class="card-title">Departs: departure date</h6>
                                                 <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
                                                 <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
                                             </div>
@@ -74,7 +65,31 @@
                                         <div class="card mb-3">
                                             <div class="card-body" id="guestCard">
                                                 <h5 class="card-title">Full name</h5>
-                                                <h6 class="card-title">Arrival - departure date</h6>
+                                                <h6 class="card-title">Departs: departure date</h6>
+                                                <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
+                                                <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-3">
+                                            <div class="card-body" id="guestCard">
+                                                <h5 class="card-title">Full name</h5>
+                                                <h6 class="card-title">Departs: departure date</h6>
+                                                <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
+                                                <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-3">
+                                            <div class="card-body" id="guestCard">
+                                                <h5 class="card-title">Full name</h5>
+                                                <h6 class="card-title">Departs: departure date</h6>
+                                                <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
+                                                <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-3">
+                                            <div class="card-body" id="guestCard">
+                                                <h5 class="card-title">Full name</h5>
+                                                <h6 class="card-title">Departs: departure date</h6>
                                                 <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
                                                 <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
                                             </div>
@@ -82,35 +97,23 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- departures card -->
-                    <div class="row" style="padding-top: 1rem;">
-                        <div class="col">
-                            <div class="card" id="cardStyle">
+                                
+                            <!-- departures card -->
+                            <div class="card mt-2" id="cardStyle">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-8">
-                                            <div class="row">
-                                                <h4 class="card-title">Today's departures</h4>
-                                            </div>
-                                        </div>
                                         <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="btn btn-danger">
-                                                    <b>Total</b> <span class="badge text-bg-primary">4</span>
-                                                </button>
-                                            </div>
+                                            <button type="button" class="btn btn-info position-relative">
+                                                <h4 style="margin-bottom: 1px;">Check-out</h4>
+                                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill rounded-pill bg-danger">
+                                                    3
+                                                </span>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <h6 class="card-subtitle mb-2 text-muted">{{currentDate}}</h6>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <a href="#" class="card-link">View all</a>
-                                            </div>
+                                            <h6 class="card-subtitle mt-1 text-muted">{{currentDate}}</h6>
                                         </div>
                                     </div>
                                     <!-- guest info card -->
@@ -118,7 +121,6 @@
                                         <div class="card mb-3">
                                             <div class="card-body" id="guestCard">
                                                 <h5 class="card-title">Full name</h5>
-                                                <h6 class="card-title">Arrival - departure date</h6>
                                                 <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
                                                 <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
                                             </div>
@@ -126,7 +128,6 @@
                                         <div class="card mb-3">
                                             <div class="card-body" id="guestCard">
                                                 <h5 class="card-title">Full name</h5>
-                                                <h6 class="card-title">Arrival - departure date</h6>
                                                 <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
                                                 <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
                                             </div>
@@ -134,7 +135,6 @@
                                         <div class="card mb-3">
                                             <div class="card-body" id="guestCard">
                                                 <h5 class="card-title">Full name</h5>
-                                                <h6 class="card-title">Arrival - departure date</h6>
                                                 <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
                                                 <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
                                             </div>
@@ -143,199 +143,189 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- table, performance cards and statistics -->
-                <div class="col-7" style="padding: 1rem;">
-                    <!-- available rooms table -->
-                    <div class="row">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Building name</th>
-                                    {% for dates in weeklyDates %}
-                                        <th scope="col">{{dates}}</th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">Aparthotel1</th>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Aparthotel2</th>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                    <td>roomAvailable</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- performance numbers -->
-                    <div class="row">
-                        <!-- card #1 -->
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="row">
-                                                <h4 class="card-title">Booking.com</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="btn btn-info">
-                                                    Rooms: 10
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- statistics -->
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="fs-5">Daily sales</p>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="btn btn-secondary" disabled>sales</button>
-                                                <button type="button" class="btn btn-outline-success" disabled>
-                                                    <i class="bi-arrow-up"></i>
-                                                    %increase
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="fs-5">Monthly sales</p>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="btn btn-secondary" disabled>sales</button>
-                                                <button type="button" class="btn btn-outline-danger" disabled>
-                                                    <i class="bi-arrow-down"></i>
-                                                    %increase
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="fs-5">Yearly sales</p>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="btn btn-secondary" disabled>sales</button>
-                                                <button type="button" class="btn btn-outline-success" disabled>
-                                                    <i class="bi-arrow-up"></i>
-                                                    %increase
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="card-link">Monthly sales</a>
-                                    <a href="#" class="card-link">Quarterly sales</a>
-                                    <a href="#" class="card-link">Yearly sales</a>
+
+                        <!-- table, performance cards and statistics -->
+                        <div class="col" style="padding: 1rem;">
+                            <!-- available rooms table -->
+                            <div class="row mb-3">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Building name</th>
+                                                {% for dates in weeklyDates %}
+                                                    <th scope="col">{{dates}}</th>
+                                                {% endfor %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Aparthotel1</th>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Aparthotel2</th>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                                <td>roomAvailable</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </div>
-                        <!-- card #2 -->
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
+                            
+                            <!-- performance numbers -->
+                            <div class="row">
+                                <!-- card #1 -->
+                                <div class="col">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
                                             <div class="row">
-                                                <h4 class="card-title">Traveloka</h4>
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <h4 class="card-title">Booking.com <span class="badge rounded-pill bg-info">1/5 available</span></h4>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="btn btn-info">
-                                                    Rooms: 10
-                                                </button>
+                                            <!-- statistics -->
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p class="fs-5 mb-0">Daily sales </p>
+                                                </div>
+                                                <div class="col d-flex justify-content-end">
+                                                    <p class="fs-5">
+                                                        <span class="badge rounded-pill bg-secondary">sales</span>
+                                                        <span class="badge rounded-pill bg-success">
+                                                            <i class="bi-arrow-up"></i>
+                                                            %increase
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p class="fs-5 mb-0">Monthly sales </p>
+                                                </div>
+                                                <div class="col d-flex justify-content-end">
+                                                    <p class="fs-5">
+                                                        <span class="badge rounded-pill bg-secondary">sales</span>
+                                                        <span class="badge rounded-pill bg-danger">
+                                                            <i class="bi-arrow-down"></i>
+                                                            %increase
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p class="fs-5 mb-0">Yearly sales </p>
+                                                </div>
+                                                <div class="col d-flex justify-content-end">
+                                                    <p class="fs-5">
+                                                        <span class="badge rounded-pill bg-secondary">sales</span>
+                                                        <span class="badge rounded-pill bg-success">
+                                                            <i class="bi-arrow-up"></i>
+                                                            %increase
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-evenly">
+                                                <a href="#" class="card-link">Monthly sales</a>
+                                                <a href="#" class="card-link">Quarterly sales</a>
+                                                <a href="#" class="card-link">Yearly sales</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- statistics -->
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="fs-5">Daily sales</p>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="btn btn-secondary" disabled>sales</button>
-                                                <button type="button" class="btn btn-outline-success" disabled>
-                                                    <i class="bi-arrow-up"></i>
-                                                    %increase
-                                                </button>
+                                </div>
+                                
+                                <!-- card #2 -->
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <h4 class="card-title">Traveloka <span class="badge rounded-pill bg-info">3/5 available</span></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- statistics -->
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p class="fs-5 mb-0">Daily sales </p>
+                                                </div>
+                                                <div class="col d-flex justify-content-end">
+                                                    <p class="fs-5">
+                                                        <span class="badge rounded-pill bg-secondary">sales</span>
+                                                        <span class="badge rounded-pill bg-success">
+                                                            <i class="bi-arrow-up"></i>
+                                                            %increase
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p class="fs-5 mb-0">Monthly sales </p>
+                                                </div>
+                                                <div class="col d-flex justify-content-end">
+                                                    <p class="fs-5">
+                                                        <span class="badge rounded-pill bg-secondary">sales</span>
+                                                        <span class="badge rounded-pill bg-danger">
+                                                            <i class="bi-arrow-down"></i>
+                                                            %increase
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p class="fs-5 mb-0">Yearly sales </p>
+                                                </div>
+                                                <div class="col d-flex justify-content-end">
+                                                    <p class="fs-5">
+                                                        <span class="badge rounded-pill bg-secondary">sales</span>
+                                                        <span class="badge rounded-pill bg-success">
+                                                            <i class="bi-arrow-up"></i>
+                                                            %increase
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-evenly">
+                                                <a href="#" class="card-link">Monthly sales</a>
+                                                <a href="#" class="card-link">Quarterly sales</a>
+                                                <a href="#" class="card-link">Yearly sales</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="fs-5">Monthly sales</p>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="btn btn-secondary" disabled>sales</button>
-                                                <button type="button" class="btn btn-outline-danger" disabled>
-                                                    <i class="bi-arrow-down"></i>
-                                                    %increase
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="fs-5">Yearly sales</p>
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="btn btn-secondary" disabled>sales</button>
-                                                <button type="button" class="btn btn-outline-success" disabled>
-                                                    <i class="bi-arrow-up"></i>
-                                                    %increase
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="card-link">Monthly sales</a>
-                                    <a href="#" class="card-link">Quarterly sales</a>
-                                    <a href="#" class="card-link">Yearly sales</a>
                                 </div>
                             </div>
+        
+                            <!-- performance statistics -->
+                            <div class="row">
+                                <!-- statistic #1 -->
+                                <div class="col">
+        
+                                </div>
+                                <!-- statistic #2 -->
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- performance statistics -->
-                    <div class="row">
-                        <!-- statistic #1 -->
-                        <div class="col">
-
-                        </div>
-                        <!-- statistic #2 -->
-                    </div>
-
+                    </main>
                 </div>
-                
-                
             </div>
         </div>
     </body>

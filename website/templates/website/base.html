@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>PMS | Index page</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- bootstrap css and icons CDN are located in navbar.html -->
+        <!-- chart.js -->
+        <link rel="stylesheet" href="https://www.jsdelivr.com/package/npm/chart.js?path=dist">
+    </head>
+    <body>
+        <div class="container-fluid overflow-hidden">
+            <div class="row vh-100 overflow-auto">
+                <!-- navigation bar here -->
+                {% block nav %}{% include 'navbar.html' %}{% endblock nav %}   
+
+                <!-- page content -->
+
+                <!-- check in and check out -->
+                <div class="col d-flex flex-column h-sm-100">
+                    <main class="row overflow-auto">
+                        
+                    </main>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
