@@ -26,11 +26,5 @@ $(document).ready(function() {
             $("#condition").prop("disabled", true);
         }
     });
-
-    $("#editWebsite").click(function() {
-        // $("#website2").toggle();
-        $("#editQuotaConditions").toggle();
-
-    });
     
 });

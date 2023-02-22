@@ -18,7 +18,9 @@ def getWeekDates():
             weeklyDates.append(newDate)
     return weeklyDates
 
-websites = ["booking.com", "traveloka"]
+websites = ["Booking.com", "Traveloka"]
+
+roomStatus = ["#available", "#toClean", "#unavailable"]
 
 class bookingWebsite():
   
@@ -72,3 +74,9 @@ def quotaConditions(request):
         'websites': websites,
     }
     return render(request, 'quotaConditions.html', context)
+
+def roomStatus(request):
+    # context = {
+        
+    # }
+    return render(request, 'roomStatus.html')

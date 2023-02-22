@@ -3,36 +3,23 @@
 
 {% block content %}
     <!-- page content -->
-    
-    <!-- room breakdown and price range -->
-    <div class="col-5" style="padding: 1rem;" id="navbar">
-        <div class="row">
-            <div class="col">
-                <div class="d-flex justify-content-center">
-                    <h1 class="page-header">Room breakdown and price range</h1>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- quota and conditions -->
-    <div class="col-5" style="padding: 1rem;">
+    <div class="col" >
         <div class="row">
-            <div class="col justify-content-center">
+            <div class="col d-flex justify-content-center" style="padding: 1rem;">
+                <h1 class="pageHeader">Quota, conditions and pricing</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
                 <div class="card" id="quotaConditionsCard">
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <div class="d-flex justify-content-center">
-                                    <h1 class="pageHeader">Quota and conditions</h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <h6>Room inventory: 
-                                    <span class="badge rounded-pill text-bg-info">num rooms</span>
-                                </h6>
+                                <h5>Total rooms: 
+                                    <span class="badge rounded-pill text-bg-primary">num rooms</span>
+                                </h5>
                             </div>
                         </div>
                         <!-- third party website conditions -->
@@ -93,36 +80,56 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div class="card mb-3" id="website1">
-                            <div class="card-body" id="roomConditions" style="padding-bottom: 0;">
-                                {% for websiteNames in websites %}
-                                    <div class="row">
-                                        <div class="col">
-                                            <h4 class="card-title">{{ websiteNames }}</h4>
+                        <div class="collapse multi-collapse show" id="websiteData">
+                            <div class="card mb-3 ">
+                                <div class="card-body" id="roomConditions" style="padding-bottom: 0;">
+                                    {% for websiteNames in websites %}
+                                        <div class="row">
+                                            <div class="col">
+                                                <h4 class="card-title">{{ websiteNames }}</h4>
+                                            </div>
+                                            <div class="col-7">
+                                                <li class="list-group-item">
+                                                    <div class="ms-2 mb-4">
+                                                        <h5>Listed rooms:
+                                                            <span class="badge rounded-pill text-bg-primary">10</span>
+                                                        </h5>
+                                                        <h5>Condition:
+                                                            <span class="badge rounded-pill text-bg-primary">At least 1 room available</span>
+                                                        </h5>
+                                                        <div class="fw-bold">Single room</div>
+                                                        <p class="mb-0">Price<b>(฿‎)</b>: <span class="badge bg-info rounded-pill">499</span></p>
+                                                        <div class="fw-bold">Twin room</div>
+                                                        <p class="mb-0">Price<b>(฿‎)</b>: <span class="badge bg-info rounded-pill">599</span></p>
+                                                    </div>
+                                                </li>
+                                            </div>
                                         </div>
-                                        <div class="col d-flex flex-column mb-3">
-                                            <h6>Allocated rooms: 
-                                                <span class="badge rounded-pill text-bg-info">num rooms</span>
-                                            </h6>
-                                            <h6>Condition: 
-                                                <span class="badge rounded-pill text-bg-info">condition</span>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
-                        <a href="#" class="card-link d-flex justify-content-end" id="editWebsite">Adjust quota and conditions</a>
+                        <div class="d-flex justify-content-end">
+                            <button id="editButton" class="btn btn-primary collapse show" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse,#editButton,#cancelButton" aria-expanded="false" aria-controls="websiteData editQuotaConditions">
+                                Edit quota, conditions and pricing
+                            </button>
+                        </div>
                         <div class="row">
-                            <div class="col" style="display: none;" id="editQuotaConditions">
+                            <div class="col mt-3 collapse multi-collapse" id="editQuotaConditions">
                             {% include 'editQuotaConditions.html' %}
                             </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button id="cancelButton" class="btn btn-danger collapse" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse,#editButton,#cancelButton" aria-expanded="false" aria-controls="websiteData editQuotaConditions">
+                                Cancel editing
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- script loader -->
     <script type="text/javascript" src="{% static 'website/quotaConditions.js' %}"></script>
 {% endblock %}

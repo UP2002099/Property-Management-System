@@ -1,9 +1,5 @@
 /* navbar.html */
 
-.lg {
-    width: 1100px;
-}
-
 hr {
     height: 1px;
     background-color: black;
@@ -52,4 +48,24 @@ hr {
 
 #roomConditions {
     padding: 1rem;
+}
+
+/* roomStatus */
+
+#available {
+    background-color: #198754;
+    border-color: #198754;
+    background-image: none;
+}
+
+#toClean {
+    background-color: #0dcaf0;
+    border-color: #0dcaf0;
+    background-image: none;
+}
+
+#unavailable {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    background-image: none;
 }

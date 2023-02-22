@@ -1,0 +1,182 @@
+{% extends 'website/baseTemplate.html' %}
+{% block content %}
+    <div class="col">
+        <div class="row">
+            <div class="col">
+                <div class="d-flex justify-content-center">
+                    <h1 class="page-header m-3">Room status and cleaning</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-evenly">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="available" checked>
+                    <label class="form-check-label" for="available">Room available</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="toClean" checked>
+                    <label class="form-check-label" for="toClean">Room needs cleaning</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="unavailable" checked>
+                    <label class="form-check-label" for="unavailable">Room unavailable</label>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <h2 class="page-header m-3">Aparthotel1</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3 class="page-header m-3 d-flex justify-content-center">Room status</h3>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="floor1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                            Floor 1 (Hotel) 
+                            <span class="badge rounded-pill text-bg-success">3</span>
+                            <span class="badge rounded-pill text-bg-info">1</span>
+                            <span class="badge rounded-pill text-bg-danger">5</span>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="available" checked>
+                                            <label class="form-check-label" for="available">
+                                                101
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="unavailable" checked>
+                                            <label class="form-check-label" for="unavailable">
+                                                102
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="available" checked>
+                                            <label class="form-check-label" for="available">
+                                                103
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-9 col-sm-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="unavailable" checked>
+                                            <label class="form-check-label" for="unavailable">
+                                                104
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="unavailable" checked>
+                                            <label class="form-check-label" for="unavailable">
+                                                105
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="toClean" checked>
+                                            <label class="form-check-label" for="toClean">
+                                                106
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="unavailable" checked>
+                                            <label class="form-check-label" for="unavailable">
+                                                107
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="toClean" checked>
+                                            <label class="form-check-label" for="toClean">
+                                                108
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="unavailable" checked>
+                                            <label class="form-check-label" for="unavailable">
+                                                109
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Floor 2 (Apartment)
+                            <span class="badge rounded-pill text-bg-success">0</span>
+                            <span class="badge rounded-pill text-bg-info">0</span>
+                            <span class="badge rounded-pill text-bg-danger">9</span>
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <!-- room statueses HERE -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Floor 3 (Apartment)
+                            <span class="badge rounded-pill text-bg-success">0</span>
+                            <span class="badge rounded-pill text-bg-info">0</span>
+                            <span class="badge rounded-pill text-bg-danger">9</span>
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <!-- room statueses HERE -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <h3 class="page-header m-3 d-flex justify-content-center">Rooms to clean</h3>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="floor1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                            Floor 1 (Hotel) 
+                            <span class="badge rounded-pill text-bg-info">2</span>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="toCleanStatus">
+                                            <label class="form-check-label" for="toCleanStatus">
+                                                106
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="toCleanStatus">
+                                            <label class="form-check-label" for="toCleanStatus">
+                                                108
+                                            </label>
+                                        </div>
+                                        <!-- disable button UNTIL all checkboxes are CHECKED! -->
+                                        <button type="button" class="btn btn-primary">Submit job</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

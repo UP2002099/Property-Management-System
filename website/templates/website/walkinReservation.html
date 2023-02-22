@@ -3,34 +3,40 @@
 {% block content %}
 
     <!-- page content -->
-    <div class="col" style="padding: 1rem;" id="maxHeight">
+    <div class="col-xs-6">
         <div class="row">
             <div class="col">
                 <div class="d-flex justify-content-center">
-                    <h1 class="page-header">Walk-in Reservation</h1>
+                    <h1 class="page-header m-3">Walk-in Reservation</h1>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <div class="d-flex justify-content-evenly">
-                    <div class="mb-3">
-                        <label for="firstName" class="form-label">First name</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="firstName" aria-describedby="basic-addon3" placeholder="Enter first name">
-                        </div>
+                    <div class="col-sm-3 form-floating mb-3">
+                        <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
+                        <label for="firstName">First name</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="lastName" class="form-label">Last name</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="lastName" aria-describedby="basic-addon3" placeholder="Enter last name">
-                        </div>
+                    <div class="col-sm-3 form-floating mb-3">
+                        <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
+                        <label for="lastName">Last name</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="arrivalDate" class="form-label">Check-in</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="arrivalDate" aria-label="disabled input" value="{{currentDate}}" disabled readonly>
-                        </div>
+                    <div class="col-sm-3 form-floating mb-3">
+                        <select class="form-select" id="guestNum">
+                            <option selected>Choose...</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <label for="guestNum">Guests</label>
                     </div>
                 </div>
             </div>
@@ -38,45 +44,28 @@
         <div class="row">
             <div class="col">
                 <div class="d-flex justify-content-evenly">
-                    <div class="mb-1">
-                        <label for="numGuestInput" class="form-label">Number of guests</label>
-                        <!-- bind datalist to input by using the same input list and datalist id -->
-                        <input class="form-control" list="numGuestOptions" id="numGuestInput" placeholder="Type to search...">
-                        <datalist id="numGuestOptions">
-                            <option value="1"></option>
-                            <option value="2"></option>
-                            <option value="3"></option>
-                            <option value="4"></option>
-                            <option value="5"></option>
-                            <option value="6"></option>
-                            <option value="7"></option>
-                            <option value="8"></option>
-                            <option value="9"></option>
-                            <option value="10"></option>
-                        </datalist>
-                    </div>
-                    <div class="mb-3">
-                        <label for="roomTypeInput" class="form-label">Room type</label>
-                        <select class="form-select" id="roomTypeInput">
+                    <div class="col-sm-3 form-floating mb-3">
+                        <select class="form-select" id="roomType">
                             <option selected>Choose...</option>
                             <option value="Single room">Single room</option>
                             <option value="Twin room">Twin room</option>
                         </select>
+                        <label for="roomType">Room Type</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="numRoomsInput" class="form-label">Number of rooms</label>
-                        <input class="form-control" list="numRooms" id="numRoomsInput" placeholder="Type to search...">
-                        <datalist id="numRooms">
-                            <option value="1"></option>
-                            <option value="2"></option>
-                            <option value="3"></option>
-                            <option value="4"></option>
-                            <option value="5"></option>
-                        </datalist>
+                    <div class="col-sm-3 form-floating mb-3">
+                        <select class="form-select" id="numRooms">
+                            <option selected>Choose...</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <label for="numRooms">Total rooms</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="departureDateInput" class="form-label">Check-out</label>
-                        <input class="form-control" id="departureDateInput" type="date">
+                    <div class="col-sm-3 form-floating mb-3">
+                        <input class="form-control" id="checkoutDate" type="date">
+                        <label for="checkoutDate" class="form-label">Check-out</label>
                     </div>
                 </div>
             </div>
