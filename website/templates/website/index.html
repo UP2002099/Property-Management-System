@@ -1,19 +1,21 @@
 {% extends 'website/baseTemplate.html' %}
 
 {% block content %}
+
+    <!-- page content -->
     <div class="col pt-2">
         <!-- arrivals card -->
-        <div class="card" id="cardStyle">
+        <div class="card" id="indexCard">
             <div class="card-body">
                 <!-- card header -->
                 <div class="row">
                     <div class="col">
-                        <button type="button" class="btn btn-info position-relative">
+                        <a class="btn btn-info position-relative" href="{% url 'reservations' %}">
                             <h4 style="margin-bottom: 1px;">Check-in</h4>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill rounded-pill bg-danger">
-                                6
+                                {{numCheckIn}}
                             </span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="row">
@@ -23,69 +25,31 @@
                 </div>
                 <!-- guest info card -->
                 <div id="scroller">
-                    <div class="card mb-3">
-                        <div class="card-body" id="guestCard">
-                            <h5 class="card-title">Full name</h5>
-                            <h6 class="card-title">Departs: departure date</h6>
-                            <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
-                            <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
+                    {% for guests in todayCheckIn %}
+                        <div class="card mb-3">
+                            <div class="card-body" id="guestCard">
+                                <h5 class="card-title">{{guests.guestFirstName}} {{guests.guestLastName}}</h5>
+                                <h6 class="card-title">Departs: {{guests.checkOutDate}}</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">{{guests.numNights}} nights | room num | {{guests.numRooms}} room</h6>
+                                <h6 class="card-subtitle"><a href="#" class="card-link">Reference: {{guests.extReservationId}} | Website: {{guests.website}}</a></h6>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-body" id="guestCard">
-                            <h5 class="card-title">Full name</h5>
-                            <h6 class="card-title">Departs: departure date</h6>
-                            <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
-                            <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
-                        </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-body" id="guestCard">
-                            <h5 class="card-title">Full name</h5>
-                            <h6 class="card-title">Departs: departure date</h6>
-                            <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
-                            <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
-                        </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-body" id="guestCard">
-                            <h5 class="card-title">Full name</h5>
-                            <h6 class="card-title">Departs: departure date</h6>
-                            <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
-                            <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
-                        </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-body" id="guestCard">
-                            <h5 class="card-title">Full name</h5>
-                            <h6 class="card-title">Departs: departure date</h6>
-                            <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
-                            <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
-                        </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-body" id="guestCard">
-                            <h5 class="card-title">Full name</h5>
-                            <h6 class="card-title">Departs: departure date</h6>
-                            <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
-                            <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
             
         <!-- departures card -->
-        <div class="card mt-2" id="cardStyle">
+        <div class="card mt-2" id="indexCard">
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <button type="button" class="btn btn-info position-relative">
+                        <a class="btn btn-info position-relative" href="{% url 'reservations' %}">
                             <h4 style="margin-bottom: 1px;">Check-out</h4>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill rounded-pill bg-danger">
-                                3
+                                {{numCheckOut}}
                             </span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="row">
@@ -95,27 +59,15 @@
                 </div>
                 <!-- guest info card -->
                 <div id="scroller">
-                    <div class="card mb-3">
-                        <div class="card-body" id="guestCard">
-                            <h5 class="card-title">Full name</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
-                            <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
+                    {% for guests in todayCheckOut %}
+                        <div class="card mb-3">
+                            <div class="card-body" id="guestCard">
+                                <h5 class="card-title">{{guests.guestFirstName}} {{guests.guestLastName}}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{guests.numNights}} nights | room num | room type</h6>
+                                <h6 class="card-subtitle"><a href="#" class="card-link">Reference: {{guests.extReservationId}} | Website: {{guests.website}}</a></h6>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-body" id="guestCard">
-                            <h5 class="card-title">Full name</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
-                            <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
-                        </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-body" id="guestCard">
-                            <h5 class="card-title">Full name</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Num nights | room num | room type</h6>
-                            <h6 class="card-subtitle"><a href="#" class="card-link">Reference: 0123456789 | Website origin</a></h6>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

@@ -3,6 +3,8 @@ from django.shortcuts import render
 from datetime import datetime, timedelta
 from django.template.response import TemplateResponse
 from django.db import models
+from .models import *
+
 
 #0 get today's date
 def getTodayDate():
@@ -20,7 +22,7 @@ def getWeekDates():
 
 websites = ["Booking.com", "Traveloka"]
 
-roomStatus = ["#available", "#toClean", "#unavailable"]
+roomStatusColor = ["#available", "#toClean", "#unavailable"]
 
 class bookingWebsite():
   
@@ -51,15 +53,25 @@ def baseTemplate(request):
     return render(request, 'base.html')
 
 def index(request):
-    #2 get this month's revenue statistics (line graph)
+    #1 get this month's revenue statistics (line graph)
     labels = []
     data = []
     
-    #3 get the previous quarter's revenue statistics (bar graph)
+    #2 get the previous quarter's revenue statistics (bar graph)
+    
+    #3 get today's check-ins and check-outs
+    todayCheckIn = reservation.objects.filter(checkInDate=getTodayDate())
+    todayCheckOut = reservation.objects.filter(checkOutDate=getTodayDate())
+    numCheckIn = todayCheckIn.count()
+    numCheckOut = todayCheckOut.count()
     
     context = {
         'currentDate': getTodayDate(),
         'weeklyDates': getWeekDates(),
+        'todayCheckIn': todayCheckIn,
+        'todayCheckOut': todayCheckOut,
+        'numCheckIn': numCheckIn,
+        'numCheckOut': numCheckOut
     }
     return render(request, 'index.html', context)
 
@@ -80,3 +92,11 @@ def roomStatus(request):
         
     # }
     return render(request, 'roomStatus.html')
+
+def reservations(request):
+    context = {
+        'currentDate': getTodayDate(),
+        'weeklyDates': getWeekDates(),
+
+    }
+    return render(request, 'reservations.html', context)
