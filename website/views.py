@@ -1,17 +1,18 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime, timedelta
 from django.template.response import TemplateResponse
+from django.db.models import Count
 from django.db import models
 from .models import *
+from .forms import reservationForm
 
-
-#0 get today's date
+# get today's date
 def getTodayDate():
     currentDate = datetime.now().date()
     return currentDate
 
-#1 get a week's worth of dates and the current date
+# get a week's worth of dates and the current date
 def getWeekDates():
     weeklyDates = []
     for i in range(0, 8):
@@ -20,33 +21,17 @@ def getWeekDates():
             weeklyDates.append(newDate)
     return weeklyDates
 
-websites = ["Booking.com", "Traveloka"]
+def threeMonthDates():
+    threeMonthsOfDates = []
+    today = datetime.now().date()
+    threeMonthsFromToday = today + timedelta(days=90)
 
-roomStatusColor = ["#available", "#toClean", "#unavailable"]
+    while today <= threeMonthsFromToday:
+        threeMonthsOfDates.append(today)
+        today += timedelta(days=1)
+    return threeMonthsOfDates
 
-class bookingWebsite():
-  
-    def __init__(self, websiteName):
-        self.websiteName = websiteName
-        self.quotaConditionVar = []
-
-    def addQuotaConditionVar(self, quota, condition):
-        self.quota.append(quota)
-        self.condition.append(condition)
-    
-    def build():
-        for i in range(0, len(websites)):
-            websites[i] = bookingWebsite(websites[i])
-            websites[i].quotaConditionVar("roomQty" + str(i+1))
-            websites[i].quotaConditionVar("conditionSelect" + str(i+1))
-        return websites
-        
-def build():
-    for i in range(0, len(websites)):
-        websites[i] = bookingWebsite(websites[i])
-        websites[i].quotaConditionVar("roomQty" + str(i+1))
-        websites[i].quotaConditionVar("conditionSelect" + str(i+1))
-    return websites
+websites = ['Booking.com', 'Traveloka']
 
 # template views
 def baseTemplate(request):
@@ -75,28 +60,88 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
+def getFloorInfo(option):
+    paraisoFloorRooms = {}
+    toClean = []
+    paraisoRoomStatus = {'available': 0, 'unavailable': 0, 'cleaning': 0}
+    paraisoRooms = buildingRoom.objects.all().values('roomNum', 'roomFloor', 'roomStatus')
+    for room in paraisoRooms:
+        floorNum = room['roomFloor']
+        if floorNum not in paraisoFloorRooms:
+            paraisoFloorRooms[floorNum] = {'rooms': [], 'available': 0, 'unavailable': 0, 'cleaning': 0}
+        paraisoFloorRooms[floorNum]['rooms'].append(room)
+        if room['roomStatus'] == 'available':
+            paraisoFloorRooms[floorNum]['available'] += 1
+            paraisoRoomStatus['available'] += 1
+        elif room['roomStatus'] == 'unavailable':
+            paraisoFloorRooms[floorNum]['unavailable'] += 1
+            paraisoRoomStatus['unavailable'] += 1
+        elif room['roomStatus'] == 'cleaning':
+            paraisoFloorRooms[floorNum]['cleaning'] += 1
+            paraisoRoomStatus['cleaning'] += 1
+            toClean.append(room)
+    
+    if option == 'floorRoom':
+        return paraisoFloorRooms
+    elif option == 'roomStatus':
+        return paraisoRoomStatus
+    elif option == 'toClean':
+        return toClean
+    
+
 def walkinReservation(request):
+    
+    form = reservationForm()
+    if request.method == 'POST':
+        form = reservationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/website')
+    
     context = {
         'currentDate': getTodayDate(),
+        'form': form,
+        'paraisoRoomStatus': getFloorInfo('roomStatus'),
     }
     return render(request, 'walkinReservation.html', context)
 
+def roomStatus(request):
+    context = {
+        'paraisoFloorRooms': getFloorInfo('floorRoom'),
+        'paraisoRoomStatus': getFloorInfo('roomStatus'),
+        'toClean': getFloorInfo('toClean'),
+    }
+    return render(request, 'roomStatus.html', context)
+
 def quotaConditions(request):
+    
+    hotelRooms = len(buildingRoom.objects.filter(roomSection='Hotel'))
+    
     context = {
         'websites': websites,
+        'hotelRooms': hotelRooms,
     }
     return render(request, 'quotaConditions.html', context)
 
-def roomStatus(request):
-    # context = {
-        
-    # }
-    return render(request, 'roomStatus.html')
+def getReservations():
+    reservationsList = []
+    today = datetime.now().date()
+    threeMonthsFromToday = today + timedelta(days=90)
 
-def reservations(request):
+    for i in range(0, 9):
+        reservationDate = today + timedelta(days=i)
+        initialDate = reservationDate
+        threeMonthsFromToday = initialDate + timedelta(days=1)
+        getReservations = reservation.objects.filter(checkInDate=initialDate).filter(checkInDate=threeMonthsFromToday)
+        reservationsList.extend(list(getReservations))
+    return reservationsList
+
+def allReservations(request):
+    
     context = {
         'currentDate': getTodayDate(),
         'weeklyDates': getWeekDates(),
-
+        'threeMonthDates': threeMonthDates(),
+        'threeMonthsReservations':getReservations(),
     }
-    return render(request, 'reservations.html', context)
+    return render(request, 'allReservations.html', context)

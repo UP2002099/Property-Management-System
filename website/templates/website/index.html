@@ -10,7 +10,7 @@
                 <!-- card header -->
                 <div class="row">
                     <div class="col">
-                        <a class="btn btn-info position-relative" href="{% url 'reservations' %}">
+                        <a class="btn btn-info position-relative" href="{% url 'allReservations' %}">
                             <h4 style="margin-bottom: 1px;">Check-in</h4>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill rounded-pill bg-danger">
                                 {{numCheckIn}}
@@ -29,7 +29,7 @@
                         <div class="card mb-3">
                             <div class="card-body" id="guestCard">
                                 <h5 class="card-title">{{guests.guestFirstName}} {{guests.guestLastName}}</h5>
-                                <h6 class="card-title">Departs: {{guests.checkOutDate}}</h6>
+                                <h6 class="card-title">Check-out: {{guests.checkOutDate}}</h6>
                                 <h6 class="card-subtitle mb-2 text-muted">{{guests.numNights}} nights | room num | {{guests.numRooms}} room</h6>
                                 <h6 class="card-subtitle"><a href="#" class="card-link">Reference: {{guests.extReservationId}} | Website: {{guests.website}}</a></h6>
                             </div>
@@ -44,7 +44,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <a class="btn btn-info position-relative" href="{% url 'reservations' %}">
+                        <a class="btn btn-info position-relative" href="{% url 'allReservations' %}">
                             <h4 style="margin-bottom: 1px;">Check-out</h4>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill rounded-pill bg-danger">
                                 {{numCheckOut}}

@@ -7,22 +7,32 @@ from django.db import models
 # Add autoimport reminder for other third party booking websites too!
 
 class reservation(models.Model):
+    PROPERTIES = (
+        ("paraiso", "Paraiso"),
+        ("rosiate", "Rosiate"),
+    )
+    
+    ROOMTYPE = (
+        ("Single room", "Single room"),
+        ("Double room", "Double room")
+    )
     intReservationId = models.AutoField(primary_key=True)
-    extReservationId = models.CharField(max_length=20)
+    extReservationId = models.CharField(max_length=20, null=True)
     # Autoimport from .csv
-    propertyName = models.CharField(max_length=15)
+    propertyName = models.CharField(max_length=15, choices=PROPERTIES)
     guestFirstName = models.CharField(max_length=15)
     guestLastName = models.CharField(max_length=15)
     numGuests = models.IntegerField()
     numRooms = models.IntegerField()
+    bookedRoomType = models.CharField(max_length=12, choices=ROOMTYPE)
     checkInDate = models.DateField(max_length=8)
     checkOutDate = models.DateField(max_length=8)
     # Autoimport from .csv
-    reservationStatus = models.CharField(max_length=15)
+    reservationStatus = models.CharField(max_length=15, null=True)
     totalPayment = models.DecimalField(max_digits=5, decimal_places=2)
-    commission = models.DecimalField(max_digits=5, decimal_places=2)
+    commission = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     # requires new workarounds to identify the website when dealing with multiple third party booking websites
-    website = models.CharField(max_length=15)
+    website = models.CharField(max_length=15, null=True)
     
     def __str__(self):
         return self.guestFirstName + " " + self.guestLastName + " | ID: " + str(self.intReservationId) + " | " + str(self.checkInDate) + " - " + str(self.checkOutDate)
@@ -37,11 +47,20 @@ class bookingWebsite(models.Model):
     def __str__(self):
         return self.websiteName
 
+class building(models.Model):
+    propertyName = models.CharField(primary_key=True, max_length=20)
+    totalRooms = models.IntegerField()
+    totalFloors = models.IntegerField()
+    listedWebsites = models.ForeignKey(bookingWebsite, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.propertyName
+
 class buildingRoom(models.Model):
     STATUS = (
-        ("Available", "Available"),
-        ("Unavailable", "Unavailable"),
-        ("Needs Cleaning", "Needs Cleaning"),
+        ("available", "Available"),
+        ("unavailable", "Unavailable"),
+        ("cleaning", "Cleaning"),
     )
     ROOMTYPE = (
         ("Single room", "Single room"),
@@ -58,10 +77,11 @@ class buildingRoom(models.Model):
     roomStatus = models.CharField(max_length=15, choices=STATUS)
     listedWebsites = models.ForeignKey(bookingWebsite, on_delete=models.CASCADE, null=True)
     roomSection = models.CharField(max_length=10, choices=ROOMSECTION)
+    propertyName = models.ForeignKey(building, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.roomNum
-    
+        return str(self.roomNum) + " (" + str(self.roomSection) + ") " + str(self.propertyName) + " | STATUS: " + self.roomStatus
+
 class employee(models.Model):
     employeeID = models.AutoField(primary_key=True)
     employeeFirstName = models.CharField(max_length=15)
@@ -72,9 +92,3 @@ class employee(models.Model):
     
     def __str__(self):
         return self.employeeID
-
-class building(models.Model):
-    propertyName = models.CharField(primary_key=True, max_length=20)
-    totalRooms = models.IntegerField()
-    listedWebsites = models.ForeignKey(bookingWebsite, on_delete=models.CASCADE)
-    intReservationId = models.ForeignKey(reservation, on_delete=models.CASCADE)

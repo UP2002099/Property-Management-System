@@ -1,0 +1,40 @@
+{% extends 'website/baseTemplate.html' %}
+
+{% block content %}
+
+    <!-- page content -->
+    <div class="col">
+        <div class="row">
+            <div class="col">
+                <div class="d-flex justify-content-center">
+                    <h1 class="page-header m-3">All reservations</h1>
+                </div>
+            </div>
+        </div>
+        {% for day in threeMonthDates %}
+            <div class="card mb-3">
+                <div class="card-body px-3 pt-2 pb-2">
+                    <!-- card header -->
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="card-title">{{day}}</h3>
+                        </div>
+                    </div>
+                    <!-- guest info card -->
+                    {% for reservation in threeMonthsReservations %}
+                        {% if reservation.checkInDate == day %}
+                            <div class="card mb-3">
+                                <div class="card-body" id="guestCard">
+                                    <h5 class="card-title">{{ reservation.guestFirstName }} {{ reservation.guestLastName }}</h5>
+                                    <h6 class="card-title">Check-out: {{ reservation.checkOutDate }}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ reservation.numNights }} night(s) | Room {{ reservation.numRooms }} | {{ reservation.bookedRoomType }}</h6>
+                                    <h6 class="card-subtitle"><a href="#" class="card-link">Reference: {{ reservation.extReservationId }} | {{ reservation.website }}</a></h6>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
