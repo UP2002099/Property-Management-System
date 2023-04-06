@@ -36,7 +36,7 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <h3 class="page-header m-3 d-flex justify-content-center">Room status
+                        <h3 class="page-header m-3 d-flex justify-content-center">Building
                             <span class="badge rounded-pill text-bg-success">{{ paraisoRoomStatus.available }}</span> 
                             <!-- available -->
                             <span class="badge rounded-pill text-bg-info">{{ paraisoRoomStatus.cleaning }}</span>
@@ -81,19 +81,11 @@
             </div>
             <div class="col">
                 <h3 class="page-header m-3 d-flex justify-content-center">Rooms to clean</h3>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        {% for room in toClean %}
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="toCleanStatus">
-                                <label class="form-check-label" for="toCleanStatus">
-                                    {{room.roomNum}}
-                                </label>
-                            </div>
-                        {% endfor %}
-                    </li>
-                </ul>
-                <button type="button" class="btn btn-primary">Submit job</button>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary" {% if paraisoRoomStatus.cleaning == 0 %} disabled {% endif %} >Submit job</button>
+                </form>
             </div>
         </div>
     </div>

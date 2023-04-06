@@ -80,7 +80,7 @@ class buildingRoom(models.Model):
     propertyName = models.ForeignKey(building, on_delete=models.CASCADE)
     
     def __str__(self):
-        return str(self.roomNum) + " (" + str(self.roomSection) + ") " + str(self.propertyName) + " | STATUS: " + self.roomStatus
+        return str(self.roomNum) + " Floor " + str(self.roomFloor) + " (" + str(self.roomSection) + ") " + str(self.propertyName) + " | " + self.roomStatus
 
 class employee(models.Model):
     employeeID = models.AutoField(primary_key=True)

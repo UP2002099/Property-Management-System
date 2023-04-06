@@ -1,11 +1,11 @@
 from django import forms
-from .models import reservation
+from .models import reservation, buildingRoom
 
 class reservationForm(forms.ModelForm):
     class Meta:
         model = reservation
         fields = ['propertyName', 'guestFirstName', 'guestLastName', 'numGuests', 'numRooms', 'bookedRoomType', 'checkInDate', 'checkOutDate', 'totalPayment']
-        label = {'propertyName': 'Property', 'guestFirstName': 'First name', 'guestLastName': 'Last name', 'numGuests': 'Number of guests', 'numRooms': 'Number of rooms', 'checkInDate': 'Checkin', 'checkOutDate': 'Checkout', 'totalPayment': 'Total payment'}
+        labels = {'propertyName': 'Property', 'guestFirstName': 'First Name', 'guestLastName': 'Last Name', 'numGuests': 'Number of Guests', 'numRooms': 'Number of Rooms', 'bookedRoomType': 'Room Type' ,'checkInDate': 'Check-In Date', 'checkOutDate': 'Check-Out Date', 'totalPayment': 'Total Payment'}
         
         widgets = {
             'propertyName': forms.Select(attrs={'class': 'form-control'}),
@@ -17,6 +17,11 @@ class reservationForm(forms.ModelForm):
             'checkInDate': forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
             'checkOutDate': forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
             'totalPayment': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            
         }
-        
+
+class cleaningForm(forms.Form):
+    roomNum = forms.ModelMultipleChoiceField(
+        queryset=buildingRoom.objects.filter(roomStatus='cleaning'),
+        widget=forms.CheckboxSelectMultiple,
+        label=''
+    )

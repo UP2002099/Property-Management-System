@@ -5,7 +5,7 @@ from django.template.response import TemplateResponse
 from django.db.models import Count
 from django.db import models
 from .models import *
-from .forms import reservationForm
+from .forms import reservationForm, cleaningForm
 
 # get today's date
 def getTodayDate():
@@ -90,7 +90,6 @@ def getFloorInfo(option):
     
 
 def walkinReservation(request):
-    
     form = reservationForm()
     if request.method == 'POST':
         form = reservationForm(request.POST)
@@ -106,10 +105,19 @@ def walkinReservation(request):
     return render(request, 'walkinReservation.html', context)
 
 def roomStatus(request):
+    if request.method == 'POST':
+        form = cleaningForm(request.POST)
+        if form.is_valid():
+            roomNum = form.cleaned_data['roomNum']
+            roomNum.update(roomStatus='available')
+    else:
+        form = cleaningForm()
+    
     context = {
         'paraisoFloorRooms': getFloorInfo('floorRoom'),
         'paraisoRoomStatus': getFloorInfo('roomStatus'),
         'toClean': getFloorInfo('toClean'),
+        'form': form,
     }
     return render(request, 'roomStatus.html', context)
 
