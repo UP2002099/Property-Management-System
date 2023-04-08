@@ -3,7 +3,7 @@ from .models import *
 
 class reservationForm(forms.ModelForm):
     class Meta:
-        model = reservation
+        model = reservationModel
         fields = ['propertyName', 'guestFirstName', 'guestLastName', 'numGuests', 'numRooms', 'bookedRoomType', 'checkInDate', 'checkOutDate', 'totalPayment']
         labels = {'propertyName': 'Property', 'guestFirstName': 'First Name', 'guestLastName': 'Last Name', 'numGuests': 'Number of Guests', 'numRooms': 'Number of Rooms', 'bookedRoomType': 'Room Type' ,'checkInDate': 'Check-In Date', 'checkOutDate': 'Check-Out Date', 'totalPayment': 'Total Payment'}
         

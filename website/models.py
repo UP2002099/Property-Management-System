@@ -6,10 +6,9 @@ from django.db import models
     # Not importing from properties dashboard will cause null error for columns with #Autoimport...
 # Add autoimport reminder for other third party booking websites too!
 
-class reservation(models.Model):
+class reservationModel(models.Model):
     PROPERTIES = (
         ("paraiso", "Paraiso"),
-        ("rosiate", "Rosiate"),
     )
     
     ROOMTYPE = (
@@ -17,7 +16,7 @@ class reservation(models.Model):
         ("Double room", "Double room")
     )
     intReservationId = models.AutoField(primary_key=True)
-    extReservationId = models.CharField(max_length=20, null=True)
+    extReservationId = models.CharField(max_length=20, null=True, blank=True)
     # Autoimport from .csv
     propertyName = models.CharField(max_length=15, choices=PROPERTIES)
     guestFirstName = models.CharField(max_length=15)
@@ -28,11 +27,11 @@ class reservation(models.Model):
     checkInDate = models.DateField(max_length=8)
     checkOutDate = models.DateField(max_length=8)
     # Autoimport from .csv
-    reservationStatus = models.CharField(max_length=15, null=True)
+    reservationStatus = models.CharField(max_length=15, null=True, blank=True)
     totalPayment = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    commission = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    commission = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     # requires new workarounds to identify the website when dealing with multiple third party booking websites
-    website = models.CharField(max_length=15, null=True)
+    website = models.CharField(max_length=15, null=True, blank=True)
     
     def __str__(self):
         return self.guestFirstName + " " + self.guestLastName + " | ID: " + str(self.intReservationId) + " | " + str(self.checkInDate) + " - " + str(self.checkOutDate)

@@ -21,42 +21,9 @@ def getWeekDates():
             weeklyDates.append(newDate)
     return weeklyDates
 
-def threeMonthDates():
-    threeMonthsOfDates = []
-    today = datetime.now().date()
-    threeMonthsFromToday = today + timedelta(days=90)
-
-    while today <= threeMonthsFromToday:
-        threeMonthsOfDates.append(today)
-        today += timedelta(days=1)
-    return threeMonthsOfDates
-
 # template views
 def baseTemplate(request):
     return render(request, 'base.html')
-
-def index(request):
-    #1 get this month's revenue statistics (line graph)
-    labels = []
-    data = []
-    
-    #2 get the previous quarter's revenue statistics (bar graph)
-    
-    #3 get today's check-ins and check-outs
-    todayCheckIn = reservation.objects.filter(checkInDate=getTodayDate())
-    todayCheckOut = reservation.objects.filter(checkOutDate=getTodayDate())
-    numCheckIn = todayCheckIn.count()
-    numCheckOut = todayCheckOut.count()
-    
-    context = {
-        'currentDate': getTodayDate(),
-        'weeklyDates': getWeekDates(),
-        'todayCheckIn': todayCheckIn,
-        'todayCheckOut': todayCheckOut,
-        'numCheckIn': numCheckIn,
-        'numCheckOut': numCheckOut
-    }
-    return render(request, 'index.html', context)
 
 def getFloorInfo(option):
     paraisoFloorRooms = {}
@@ -85,7 +52,31 @@ def getFloorInfo(option):
         return paraisoRoomStatus
     elif option == 'toClean':
         return toClean
+
+# WEBSITE TEMPLATE VIEWS
+
+def index(request):
+    #1 get this month's revenue statistics (line graph)
+    labels = []
+    data = []
     
+    #2 get the previous quarter's revenue statistics (bar graph)
+    
+    #3 get today's check-ins and check-outs
+    todayCheckIn = reservationModel.objects.filter(checkInDate=getTodayDate())
+    todayCheckOut = reservationModel.objects.filter(checkOutDate=getTodayDate())
+    numCheckIn = todayCheckIn.count()
+    numCheckOut = todayCheckOut.count()
+    
+    context = {
+        'currentDate': getTodayDate(),
+        'weeklyDates': getWeekDates(),
+        'todayCheckIn': todayCheckIn,
+        'todayCheckOut': todayCheckOut,
+        'numCheckIn': numCheckIn,
+        'numCheckOut': numCheckOut
+    }
+    return render(request, 'index.html', context)
 
 def walkinReservation(request):
     form = reservationForm()
@@ -173,17 +164,26 @@ def editQuotaConditions(request):
     }
     return render(request, 'editQuotaConditions.html', context)
 
-def getReservations():
-    reservationsList = []
+# allReservations TEMPLATE
+def threeMonthDates():
+    threeMonthsOfDates = []
     today = datetime.now().date()
     threeMonthsFromToday = today + timedelta(days=90)
 
-    for i in range(0, 9):
-        reservationDate = today + timedelta(days=i)
-        initialDate = reservationDate
-        threeMonthsFromToday = initialDate + timedelta(days=1)
-        getReservations = reservation.objects.filter(checkInDate=initialDate).filter(checkInDate=threeMonthsFromToday)
-        reservationsList.extend(list(getReservations))
+    while today <= threeMonthsFromToday:
+        threeMonthsOfDates.append(today)
+        today += timedelta(days=1)
+    return threeMonthsOfDates
+
+def getReservations():
+    reservationsList = []
+    threeMonthDatesList = threeMonthDates()
+    
+    for reservations_date in threeMonthDatesList:
+        start_date = reservations_date
+        finalDate = start_date + timedelta(days=1)
+        reservation_queryset = reservationModel.objects.filter(checkInDate__gte=start_date, checkInDate__lt=finalDate)
+        reservationsList.extend(list(reservation_queryset))
     return reservationsList
 
 def allReservations(request):

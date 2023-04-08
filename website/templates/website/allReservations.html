@@ -12,7 +12,7 @@
             </div>
         </div>
         {% for day in threeMonthDates %}
-            <div class="card mb-3">
+            <div class="card">
                 <div class="card-body px-3 pt-2 pb-2">
                     <!-- card header -->
                     <div class="row">
@@ -20,9 +20,9 @@
                             <h3 class="card-title">{{day}}</h3>
                         </div>
                     </div>
-                    <!-- guest info card -->
                     {% for reservation in threeMonthsReservations %}
                         {% if reservation.checkInDate == day %}
+                            <!-- guest info card -->
                             <div class="card mb-3">
                                 <div class="card-body" id="guestCard">
                                     <h5 class="card-title">{{ reservation.guestFirstName }} {{ reservation.guestLastName }}</h5>

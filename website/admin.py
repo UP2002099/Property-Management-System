@@ -3,7 +3,7 @@ from .models import *
 
 
 # Register your models here.
-admin.site.register(reservation)
+admin.site.register(reservationModel)
 admin.site.register(building)
 admin.site.register(buildingRoom)
 admin.site.register(employee)
