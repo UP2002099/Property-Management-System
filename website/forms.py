@@ -1,5 +1,5 @@
 from django import forms
-from .models import reservation, buildingRoom
+from .models import *
 
 class reservationForm(forms.ModelForm):
     class Meta:
@@ -25,3 +25,13 @@ class cleaningForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         label=''
     )
+        
+class RoomConditionForm(forms.ModelForm):
+    class Meta:
+        model = buildingRoom
+        fields = ['listedWebsites', 'roomType', 'roomPrice', 'roomStatus']
+
+    listedWebsites = forms.ModelChoiceField(queryset=bookingWebsite.objects.all())
+    roomType = forms.ModelChoiceField(queryset=roomPrices.objects.all())
+    roomPrice = forms.DecimalField(max_digits=8, decimal_places=2)
+    roomStatus = forms.ChoiceField(choices=buildingRoom.STATUS, widget=forms.Select(attrs={'class': 'form-control'}))

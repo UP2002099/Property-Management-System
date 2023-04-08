@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col">
                                 <h5>Total rooms: 
-                                    <span class="badge rounded-pill text-bg-primary">{{hotelRooms}}</span>
+                                    <span class="badge rounded-pill text-bg-primary">{{totalHotelRooms}}</span>
                                 </h5>
                             </div>
                         </div>
@@ -26,24 +26,24 @@
                         <div class="collapse multi-collapse show" id="websiteData">
                             <div class="card mb-3 ">
                                 <div class="card-body" id="roomConditions" style="padding-bottom: 0;">
-                                    {% for websiteNames in websites %}
+                                    {% for data in websiteData %}
                                         <div class="row">
                                             <div class="col">
-                                                <h4 class="card-title">{{ websiteNames }}</h4>
+                                                <h4 class="card-title">{{ data.website.websiteName }}</h4>
                                             </div>
                                             <div class="col-7">
                                                 <li class="list-group-item">
                                                     <div class="ms-2 mb-4">
                                                         <h5>Listed rooms:
-                                                            <span class="badge rounded-pill text-bg-primary">10</span>
+                                                            <span class="badge rounded-pill text-bg-primary">{{ data.website.roomInventory }}</span>
                                                         </h5>
                                                         <h5>Condition:
-                                                            <span class="badge rounded-pill text-bg-primary">At least 1 room available</span>
+                                                            <span class="badge rounded-pill text-bg-primary">N/A - NO API ACCESS</span>
                                                         </h5>
-                                                        <div class="fw-bold">Single room</div>
-                                                        <p class="mb-0">Price<b>(฿‎)</b>: <span class="badge bg-info rounded-pill">499</span></p>
-                                                        <div class="fw-bold">Twin room</div>
-                                                        <p class="mb-0">Price<b>(฿‎)</b>: <span class="badge bg-info rounded-pill">599</span></p>
+                                                        {% for roomData in data.roomPrices %}
+                                                            <div class="fw-bold">{{ roomData.roomType }}</div>
+                                                            <p class="mb-0">Price<b>(฿‎)</b>: <span class="badge bg-info rounded-pill">{{ roomData.roomPrice }}</span></p>
+                                                        {% endfor %}
                                                     </div>
                                                 </li>
                                             </div>
@@ -53,19 +53,9 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button id="editButton" class="btn btn-primary collapse show" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse,#editButton,#cancelButton" aria-expanded="false" aria-controls="websiteData editQuotaConditions">
+                            <a class="btn btn-primary" href="{% url 'editQuotaConditions' %}">
                                 Edit quota, conditions and pricing
-                            </button>
-                        </div>
-                        <div class="row">
-                            <div class="col mt-3 collapse multi-collapse" id="editQuotaConditions">
-                            {% include 'editQuotaConditions.html' %}
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button id="cancelButton" class="btn btn-danger collapse" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse,#editButton,#cancelButton" aria-expanded="false" aria-controls="websiteData editQuotaConditions">
-                                Cancel editing
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

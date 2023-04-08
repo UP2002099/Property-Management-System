@@ -5,7 +5,7 @@ from django.template.response import TemplateResponse
 from django.db.models import Count
 from django.db import models
 from .models import *
-from .forms import reservationForm, cleaningForm
+from .forms import *
 
 # get today's date
 def getTodayDate():
@@ -30,8 +30,6 @@ def threeMonthDates():
         threeMonthsOfDates.append(today)
         today += timedelta(days=1)
     return threeMonthsOfDates
-
-websites = ['Booking.com', 'Traveloka']
 
 # template views
 def baseTemplate(request):
@@ -123,13 +121,57 @@ def roomStatus(request):
 
 def quotaConditions(request):
     
-    hotelRooms = len(buildingRoom.objects.filter(roomSection='Hotel'))
+    totalHotelRooms = len(buildingRoom.objects.filter(roomSection='Hotel'))
+        
+    websites = bookingWebsite.objects.all()
+    websiteData = []
+    for website in websites:
+        roomData = roomPrices.objects.filter(listedWebsite=website)
+        websiteData.append({'website': website, 'roomPrices': roomData})
     
     context = {
-        'websites': websites,
-        'hotelRooms': hotelRooms,
+        'totalHotelRooms': totalHotelRooms,
+        'websiteData': websiteData,
     }
     return render(request, 'quotaConditions.html', context)
+
+def editQuotaConditions(request):
+    
+    totalHotelRooms = len(buildingRoom.objects.filter(roomSection='Hotel'))
+    
+    data = []
+    roomPricing = roomPrices.objects.all()
+    for roomType in roomPricing:
+        rooms = buildingRoom.objects.filter(roomType=roomType)
+        roomTypeData = {
+            'roomType': roomType.roomType,
+            'rooms': []
+        }
+        for room in rooms:
+            room_data = {
+                'room_num': room.roomNum,
+                'room_price': roomType.roomPrice
+            }
+            roomTypeData['rooms'].append(room_data)
+        data.append(roomTypeData)
+
+    if request.method == 'POST':
+        form = RoomConditionForm(request.POST)
+        if form.is_valid():
+            roomType = form.cleaned_data['roomType']
+            roomPrice = form.cleaned_data['roomPrice']
+
+            buildingRoom.objects.filter(roomType=roomType).update(roomPrice=roomPrice)
+
+    else:
+        form = RoomConditionForm()
+        
+    context = {
+        'data': data,
+        'form': form,
+        'totalHotelRooms': totalHotelRooms,
+    }
+    return render(request, 'editQuotaConditions.html', context)
 
 def getReservations():
     reservationsList = []

@@ -1,61 +1,62 @@
-<div class="card mb-3">
-    <div class="card-body" id="roomConditions">
-        {% block content %}
-            {% for websiteNames in websites %}
-                <div class="row">
-                    <div class="col">
-                        <h4 class="card-title">{{ websiteNames }}</h4>
-                    </div>
-                    <div class="col d-flex flex-column">
-                        <h6>Allocated rooms: 
-                            <span class="badge rounded-pill text-bg-info">num rooms</span>
-                        </h6>
-                        <h6>Condition: 
-                            <span class="badge rounded-pill text-bg-info">condition</span>
-                        </h6>
-                    </div>
-                </div>
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Allocated rooms:</h5>
-                        </div>
-                        <div class="col d-flex justify-content-end">
-                            <div class="input-group">
-                                <select class="form-select" id="{}">
-                                    <option selected value="none">Choose...</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                                <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="rooms">Confirm</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row my-3">
-                        <div class="col">
-                            <h5 class="card-title">Condition:</h5>
-                        </div>
-                        <div class="col d-flex justify-content-end">
-                            <div class="input-group">
-                                <select class="form-select" id="conditionSelect">
-                                    <option selected value="none">Choose...</option>
-                                    <option value="75">75% or more at quota</option>
-                                    <option value="50">50% or more at quota</option>
-                                    <option value="25">25% or more at quota</option>
-                                    <option value="1room">At least 1 room available</option>
-                                </select>
-                                <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="condition">Confirm</button>
-                            </div>
-                        </div>
-                    </div>
-            {% endfor %}
-        {% endblock %}
+{% extends 'website/baseTemplate.html' %}
+
+{% block content %}
+<!-- page content -->
+
+    <div class="col">
+        <div class="row">
+            <div class="col d-flex justify-content-center" style="padding: 1rem;">
+                <h1 class="pageHeader">Quota, conditions and pricing</h1>
+            </div>
+        </div>
         <div class="row">
             <div class="col d-flex justify-content-center">
-                <button class="btn-toggle btn btn-outline-danger" type="button" data-bs-toggle="button" disabled id="save">Save</button>
+                <div class="card" id="quotaConditionsCard">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5>Total rooms:
+                                    <span class="badge rounded-pill text-bg-primary">{{totalHotelRooms}}</span>
+                                </h5>
+                            </div>
+                        </div>
+                        <!-- third party website conditions -->
+                        <form method="post" action="{% url 'editQuotaConditions' %}">
+                            {% csrf_token %}
+                            {% for roomTypeData in data %}
+                                <div class="card mb-3">
+                                    <div class="card-body" id="roomConditions" style="padding-bottom: 0;">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h4 class="card-title">{{ roomTypeData.roomType }}</h4>
+                                            </div>
+                                        </div>
+                                        {% for room_data in roomTypeData.rooms %}
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title">Room Number: {{ room_data.room_num }}</h5>
+                                                </div>
+                                                <div class="col">
+                                                    <h5 class="card-title">Room Price:
+                                                        <input type="text" name="roomPrice-{{ roomTypeData.roomType }}-{{ room_data.room_num }}" value="{{ room_data.room_price }}" />
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="row">
+                                <div class="col">
+                                    <a class="btn btn-danger" href="{% url 'quotaConditions' %}">Cancel</a>
+                                    <button class="btn btn-success" type="submit">Save Changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+{% endblock %}

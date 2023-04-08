@@ -56,15 +56,24 @@ class building(models.Model):
     def __str__(self):
         return self.propertyName
 
+class roomPrices(models.Model):
+    ROOMTYPE = (
+        ("Single room", "Single room"),
+        ("Double room", "Double room")
+    )
+    roomPricesID = models.AutoField(primary_key=True)
+    listedWebsite = models.ForeignKey(bookingWebsite, on_delete=models.CASCADE)
+    roomType = models.CharField(max_length=12, choices=ROOMTYPE)
+    roomPrice = models.DecimalField(max_digits=8, decimal_places=2)
+
+    def __str__(self):
+        return str(self.listedWebsite) + ": " + str(self.roomType) + " = " + str(self.roomPrice)
+
 class buildingRoom(models.Model):
     STATUS = (
         ("available", "Available"),
         ("unavailable", "Unavailable"),
         ("cleaning", "Cleaning"),
-    )
-    ROOMTYPE = (
-        ("Single room", "Single room"),
-        ("Double room", "Double room")
     )
     ROOMSECTION = (
         ("Hotel", "Hotel"),
@@ -73,9 +82,9 @@ class buildingRoom(models.Model):
     
     roomNum = models.IntegerField(primary_key=True)
     roomFloor = models.IntegerField()
-    roomType = models.CharField(max_length=12, choices=ROOMTYPE)
+    roomType = models.ForeignKey(roomPrices, on_delete=models.CASCADE)
     roomStatus = models.CharField(max_length=15, choices=STATUS)
-    listedWebsites = models.ForeignKey(bookingWebsite, on_delete=models.CASCADE, null=True)
+    listedWebsites = models.ForeignKey(bookingWebsite, on_delete=models.CASCADE, null=True, blank=True)
     roomSection = models.CharField(max_length=10, choices=ROOMSECTION)
     propertyName = models.ForeignKey(building, on_delete=models.CASCADE)
     

@@ -9,5 +9,6 @@ urlpatterns = [
     path('quotaConditions/', views.quotaConditions, name='quotaConditions'),
     path('roomStatus/', views.roomStatus, name='roomStatus'),
     path('reservations/', views.allReservations, name='allReservations'),
+    path('editQuotaConditions/', views.editQuotaConditions, name='editQuotaConditions'),
 
 ]
