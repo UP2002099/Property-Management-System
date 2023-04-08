@@ -29,7 +29,7 @@ class reservation(models.Model):
     checkOutDate = models.DateField(max_length=8)
     # Autoimport from .csv
     reservationStatus = models.CharField(max_length=15, null=True)
-    totalPayment = models.DecimalField(max_digits=5, decimal_places=2)
+    totalPayment = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     commission = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     # requires new workarounds to identify the website when dealing with multiple third party booking websites
     website = models.CharField(max_length=15, null=True)
