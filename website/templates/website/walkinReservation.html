@@ -1,34 +1,80 @@
 {% extends 'website/baseTemplate.html' %}
+{% load static %}
 
 {% block content %}
 
     <!-- page content -->
-    <form action="" method="POST">
-        <div class="row">
-            <div class="col">
-                <div class="d-flex justify-content-center">
-                    <h1 class="page-header my-2">Walk-in Reservation</h1>
-                </div>
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-center">
+                <h1 class="page-header my-2">Walk-in Reservation</h1>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <!-- number of available rooms -->
-                <h4 class="page-header mb-2 d-flex justify-content-center">Available rooms:
-                    <span class="badge rounded-pill text-bg-success" id="availableRooms">{{ paraisoRoomStatus.available }}</span> 
-                </h4>
-            </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <!-- number of available rooms -->
+            <h4 class="page-header mb-2 d-flex justify-content-center">Available Rooms:
+                <span class="badge rounded-pill text-bg-info" id="availableRooms">{{ paraisoRoomStatus.available }}</span> 
+            </h4>
         </div>
-        <div class="form-group m-2">
-            {% csrf_token %}
-            {{ form }}
-            <div class="row">
-                <div class="col m-3">
-                    <div class="d-flex justify-content-evenly">
-                        <button type="submit" class="btn btn-primary fs-3" {% if paraisoRoomStatus.available == 0 %} disabled {% endif %}>Submit form</button>
-                    </div>
+    </div>
+    <div class="row">
+        {% for roomType, count in paraisoRoomTypeCount.items %}
+        <div class="col">
+            <!-- number of rooms per room type -->
+            <h4 class="page-header mb-2 d-flex justify-content-center">{{ roomType }}:
+                <span class="badge rounded-pill text-bg-success">{{ count }}</span>
+            </h4>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- FORM -->
+    <form method="POST" id="reservationForm" data-url-roomType="{% url 'loadSelectRoom' %}" data-url-price="{% url 'loadSelectRoomPrice' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="row">
+            <div class="col m-3">
+                <div class="d-flex justify-content-evenly">
+                    <button type="submit" class="btn btn-primary fs-3" {% if paraisoRoomStatus.available == 0 %} disabled {% endif %}>Submit form</button>
                 </div>
             </div>
         </div>
     </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $("#roomType").change(function () {
+            const url = $("#reservationForm").attr("data-url-roomType");
+            const roomType = $(this).val();
+            $.ajax({
+                url: url,
+                data: {
+                    'selectedRoomType': roomType
+                },
+
+                success: function (data) {
+                    $("#id_assignedRoom").html(data);
+
+                }
+            });
+        });
+        $("#roomType").change(function () {
+            const url = $("#reservationForm").attr("data-url-price");
+            const roomType = $(this).val();
+            $.ajax({
+                url: url,
+                data: {
+                    'selectedRoomType': roomType
+                },
+        
+                success: function (data) {
+                    $("#paymentAmount").attr({
+                        value: data
+                    });
+        
+                }
+            });
+        });
+    </script>
 {% endblock %}

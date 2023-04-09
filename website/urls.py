@@ -10,5 +10,7 @@ urlpatterns = [
     path('roomStatus/', views.roomStatus, name='roomStatus'),
     path('reservations/', views.allReservations, name='allReservations'),
     path('editQuotaConditions/', views.editQuotaConditions, name='editQuotaConditions'),
+    path('loadSelectRoom/', views.loadSelectRoom, name='loadSelectRoom'),
+    path('loadSelectRoomPrice/', views.loadSelectRoomPrice, name='loadSelectRoomPrice'),
 
 ]

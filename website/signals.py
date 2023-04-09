@@ -9,12 +9,3 @@ def updateRoomInventory(website):
 @receiver([post_save, post_delete], sender=buildingRoom)
 def buildingRoomUpdate(sender, instance, **kwargs):
     updateRoomInventory(instance.listedWebsites)
-
-# @receiver(post_save, sender=buildingRoom)
-# def set_price(sender, instance, created, **kwargs):
-#     if created:
-#         if instance.roomType == "Single room":
-#             instance.price = 1000.00
-#         elif instance.roomType == "Double room":
-#             instance.price = 1000.00
-#         instance.save()

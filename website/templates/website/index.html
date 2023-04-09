@@ -4,7 +4,7 @@
 
     <!-- page content -->
     <div class="col pt-2">
-        <!-- arrivals card -->
+        <!-- CheckIn card -->
         <div class="card" id="indexCard">
             <div class="card-body">
                 <!-- card header -->
@@ -25,13 +25,17 @@
                 </div>
                 <!-- guest info card -->
                 <div id="scroller">
-                    {% for guests in todayCheckIn %}
+                    {% for reservation in todayCheckIn %}
                         <div class="card mb-3">
                             <div class="card-body" id="guestCard">
-                                <h5 class="card-title">{{guests.guestFirstName}} {{guests.guestLastName}}</h5>
-                                <h6 class="card-title">Check-out: {{guests.checkOutDate}}</h6>
-                                <h6 class="card-subtitle mb-2 text-muted">{{guests.numNights}} nights | room num | {{guests.numRooms}} room</h6>
-                                <h6 class="card-subtitle"><a href="#" class="card-link">Reference: {{guests.extReservationId}} | Website: {{guests.website}}</a></h6>
+                                <h5 class="card-title">{{reservation.guestFirstName}} {{reservation.guestLastName}}</h5>
+                                <h6 class="card-title">Check-out: {{reservation.checkOutDate}}</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">{{reservation.numNights}} nights | Room {{ reservation.assignedRoom.pk }} | {{ reservation.roomType }}</h6>
+                                {% if reservation.website  == "Internal booking" %}
+                                    <h6 class="card-subtitle"><a href="#" class="card-link">ID: {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
+                                {% else %}
+                                    <h6 class="card-subtitle"><a href="#" class="card-link">Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
@@ -39,7 +43,7 @@
             </div>
         </div>
             
-        <!-- departures card -->
+        <!-- CheckOut card -->
         <div class="card mt-2" id="indexCard">
             <div class="card-body">
                 <div class="row">
@@ -59,13 +63,17 @@
                 </div>
                 <!-- guest info card -->
                 <div id="scroller">
-                    {% for guests in todayCheckOut %}
+                    {% for reservation in todayCheckOut %}
                         <div class="card mb-3">
                             <div class="card-body" id="guestCard">
-                                <h5 class="card-title">{{guests.guestFirstName}} {{guests.guestLastName}}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">{{guests.numNights}} nights | room num | room type</h6>
-                                <h6 class="card-subtitle"><a href="#" class="card-link">Reference: {{guests.extReservationId}} | Website: {{guests.website}}</a></h6>
-                            </div>
+                                <h5 class="card-title">{{reservation.guestFirstName}} {{reservation.guestLastName}}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{reservation.numNights}} nights | Room {{ reservation.assignedRoom.pk }} | {{ reservation.roomType }}</h6>
+                                {% if reservation.website  == "Internal booking" %}
+                                    <h6 class="card-subtitle"><a href="#" class="card-link">ID: {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
+                                {% else %}
+                                    <h6 class="card-subtitle"><a href="#" class="card-link">Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
+                                {% endif %}
+                        </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -90,17 +98,6 @@
                     <tbody>
                         <tr>
                             <th scope="row">Aparthotel1</th>
-                            <td>roomAvailable</td>
-                            <td>roomAvailable</td>
-                            <td>roomAvailable</td>
-                            <td>roomAvailable</td>
-                            <td>roomAvailable</td>
-                            <td>roomAvailable</td>
-                            <td>roomAvailable</td>
-                            <td>roomAvailable</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Aparthotel2</th>
                             <td>roomAvailable</td>
                             <td>roomAvailable</td>
                             <td>roomAvailable</td>
