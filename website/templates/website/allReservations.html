@@ -28,7 +28,11 @@
                                     <h5 class="card-title">{{ reservation.guestFirstName }} {{ reservation.guestLastName }}</h5>
                                     <h6 class="card-title">Check-out: {{ reservation.checkOutDate }}</h6>
                                     <h6 class="card-subtitle mb-2 text-muted">{{ reservation.numNights }} night(s) | Room {{ reservation.assignedRoom.pk }} | {{ reservation.roomType }}</h6>
-                                    <h6 class="card-subtitle"><a href="#" class="card-link">Reference: {{ reservation.extReservationId }} {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
+                                    {% if reservation.website  == "Internal booking" %}
+                                        <h6 class="card-subtitle"><a href="#" class="card-link">ID: {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
+                                    {% else %}
+                                        <h6 class="card-subtitle"><a href="#" class="card-link">Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endif %}
