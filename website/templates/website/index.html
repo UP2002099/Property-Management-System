@@ -28,13 +28,20 @@
                     {% for reservation in todayCheckIn %}
                         <div class="card mb-3">
                             <div class="card-body" id="guestCard">
-                                <h5 class="card-title">{{reservation.guestFirstName}} {{reservation.guestLastName}}</h5>
+
+                                {% if reservation.website  == "Internal booking" %} 
+                                    <h5 class="card-title">{{ reservation.guestFirstName }} {{ reservation.guestLastName }}</h5>
+                                {% else %}
+                                    <h5 class="card-title">{{ reservation.guestName }}</h5>
+                                {% endif %}
+
                                 <h6 class="card-title">Check-out: {{reservation.checkOutDate}}</h6>
                                 <h6 class="card-subtitle mb-2 text-muted">{{reservation.numNights}} nights | Room {{ reservation.assignedRoom.pk }} | {{ reservation.roomType }}</h6>
+                                
                                 {% if reservation.website  == "Internal booking" %}
                                     <h6 class="card-subtitle"><a href="#" class="card-link">ID: {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
                                 {% else %}
-                                    <h6 class="card-subtitle"><a href="#" class="card-link">Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
+                                    <h6 class="card-subtitle"><a href="#" class="card-link">Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.listedWebsites }}</a></h6>
                                 {% endif %}
                             </div>
                         </div>
@@ -73,7 +80,7 @@
                                 {% else %}
                                     <h6 class="card-subtitle"><a href="#" class="card-link">Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
                                 {% endif %}
-                        </div>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -83,6 +90,7 @@
 
     <!-- table, performance cards and statistics -->
     <div class="col-xl-8" style="padding: 1rem;">
+        
         <!-- available rooms table -->
         <div class="row mb-3">
             <div class="table-responsive">

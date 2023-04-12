@@ -4,6 +4,10 @@ from datetime import datetime, timedelta
 from .models import *
 from .forms import *
 
+# import external reservations into django
+def bookingcomCsv(request):
+    csv = open(r'C:\Users\pound\OneDrive\propertyManagementSystem\cleanedScraper11', 'r')
+
 # get today's date
 def getTodayDate():
     currentDate = datetime.now().date()
@@ -31,13 +35,13 @@ def getReservations(option):
     todayCheckOut = []
     
     for date in allReservationDates:
-        externalBooking = reservationModel.objects.filter(checkInDate__gte=date, checkInDate__lt=date+timedelta(days=1))
-        walkinBooking = walkinReservationModel.objects.filter(checkInDate__gte=date, checkInDate__lt=date+timedelta(days=1))
+        externalBooking = bookingcomReservations.objects.filter(checkInDate__gte=date, checkInDate__lt=date+timedelta(days=1))
+        walkinBooking = walkinReservations.objects.filter(checkInDate__gte=date, checkInDate__lt=date+timedelta(days=1))
         allReservations.extend(list(externalBooking) + list(walkinBooking))
         
         if date == today:
             todayCheckIn.extend(list(externalBooking) + list(walkinBooking))
-            todayCheckOut.extend(list(reservationModel.objects.filter(checkOutDate=date)) + list(walkinReservationModel.objects.filter(checkOutDate=date)))
+            todayCheckOut.extend(list(bookingcomReservations.objects.filter(checkOutDate=date)) + list(walkinReservations.objects.filter(checkOutDate=date)))
         
     if option == 'allReservations':
         return allReservations
@@ -72,24 +76,24 @@ def index(request):
 def buildingStatus(option):
     paraisoFloorRooms = {}
     toClean = []
-    paraisoRoomStatus = {'available': 0, 'unavailable': 0, 'cleaning': 0}
-    roomTypeCount = {'Single Bed Room': 0, 'Double Bed Room': 0}
-    roomNumbers = {'Single Bed Room': [], 'Double Bed Room': []}
+    paraisoRoomStatus = {'available': 0, 'unavailable': 0, 'cleaning': 0, 'apartment': 0}
+    roomTypeCount = {'Single Bed Room': 0, 'Twin Bed Room': 0}
+    roomNumbers = {'Single Bed Room': [], 'Twin Bed Room': []}
 
     for room in buildingRoom.objects.all().values('roomNum', 'roomFloor', 'roomStatus', 'roomType'):
         floorNum = room['roomFloor']
         if floorNum not in paraisoFloorRooms:
-            paraisoFloorRooms[floorNum] = {'rooms': [], 'available': 0, 'unavailable': 0, 'cleaning': 0, 'roomTypeCount': {}}
+            paraisoFloorRooms[floorNum] = {'rooms': [], 'available': 0, 'unavailable': 0, 'cleaning': 0, 'apartment': 0, 'roomTypeCount': {}}
         
         # Counts only the number of room types that are available and appends the room number
         if room['roomType'] == 'Single Bed Room':
             if room['roomStatus'] == 'available':
                 roomTypeCount['Single Bed Room'] += 1
                 roomNumbers['Single Bed Room'].append(room['roomNum'])
-        elif room['roomType'] == 'Double Bed Room':
+        elif room['roomType'] == 'Twin Bed Room':
             if room['roomStatus'] == 'available':
-                roomTypeCount['Double Bed Room'] += 1
-                roomNumbers['Double Bed Room'].append(room['roomNum'])
+                roomTypeCount['Twin Bed Room'] += 1
+                roomNumbers['Twin Bed Room'].append(room['roomNum'])
         
         # Iterates through floors of the building and collects and their information
         paraisoFloorRooms[floorNum]['rooms'].append(room)
@@ -103,6 +107,9 @@ def buildingStatus(option):
             paraisoFloorRooms[floorNum]['cleaning'] += 1
             paraisoRoomStatus['cleaning'] += 1
             toClean.append(room)
+        elif room['roomStatus'] == 'apartment':
+            paraisoFloorRooms[floorNum]['apartment'] += 1
+            paraisoRoomStatus['apartment'] += 1
     
     if option == 'floorRoom':
         return paraisoFloorRooms
@@ -226,7 +233,7 @@ def editQuotaConditions(request):
         data.append(roomTypeData)
 
     if request.method == 'POST':
-        form = RoomConditionForm(request.POST)
+        form = roomConditionForm(request.POST)
         if form.is_valid():
             roomType = form.cleaned_data['roomType']
             roomPrice = form.cleaned_data['roomPrice']
@@ -234,7 +241,7 @@ def editQuotaConditions(request):
             buildingRoom.objects.filter(roomType=roomType).update(roomPrice=roomPrice)
 
     else:
-        form = RoomConditionForm()
+        form = roomConditionForm()
         
     context = {
         'data': data,

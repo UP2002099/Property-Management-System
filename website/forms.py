@@ -5,7 +5,7 @@ class walkinReservationForm(forms.ModelForm):
     class Meta:
         # Stops form from loading all 'assignedRoom' fields
         assignedRoom = forms.ModelChoiceField(queryset=buildingRoom.objects.none(), label='Select a room')
-        model = walkinReservationModel
+        model = walkinReservations
         fields = [
             'propertyName', 'guestFirstName', 'guestLastName', 
             'numGuests', 'numRooms', 'roomType',
@@ -39,7 +39,7 @@ class cleaningForm(forms.Form):
         label=''
     )
         
-class RoomConditionForm(forms.ModelForm):
+class roomConditionForm(forms.ModelForm):
     class Meta:
         model = buildingRoom
         fields = ['listedWebsites', 'roomType', 'roomPrice', 'roomStatus']

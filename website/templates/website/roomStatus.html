@@ -14,22 +14,26 @@
             <div class="col d-flex justify-content-evenly">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" id="available" checked>
-                    <label class="form-check-label" for="available">Room available</label>
+                    <label class="form-check-label">Room available</label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" id="cleaning" checked>
-                    <label class="form-check-label" for="cleaning">Room needs cleaning</label>
+                    <label class="form-check-label">Room needs cleaning</label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" id="unavailable" checked>
-                    <label class="form-check-label" for="unavailable">Room unavailable</label>
+                    <label class="form-check-label">Room unavailable</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="apartment" checked>
+                    <label class="form-check-label">Room is an apartment</label>
                 </div>
             </div>
         </div>
         <hr>
         <div class="row">
             <div class="col d-flex justify-content-center">
-                <h2 class="page-header m-3">Aparthotel1</h1>
+                <h2 class="page-header m-3">Paraiso</h1>
             </div>
         </div>
         <div class="row">
@@ -37,11 +41,14 @@
                 <div class="row">
                     <div class="col">
                         <h3 class="page-header m-3 d-flex justify-content-center">Building
-                            <span class="badge rounded-pill text-bg-success">{{ paraisoRoomStatus.available }}</span> 
                             <!-- available -->
-                            <span class="badge rounded-pill text-bg-info">{{ paraisoRoomStatus.cleaning }}</span>
+                            <span class="badge rounded-pill text-bg-success">{{ paraisoRoomStatus.available }}</span> 
                             <!-- cleaning -->
+                            <span class="badge rounded-pill text-bg-info">{{ paraisoRoomStatus.cleaning }}</span>
+                            <!-- unavailable -->
                             <span class="badge rounded-pill text-bg-danger">{{ paraisoRoomStatus.unavailable }}</span>
+                            <!-- apartment -->
+                            <span class="badge rounded-pill text-bg-dark">{{ paraisoRoomStatus.apartment }}</span>
                         </h3>
                     </div>
                 </div> 
@@ -49,14 +56,16 @@
                     {% for floor, floorInfo in paraisoFloorRooms.items %}
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse">
+                                <button class="accordion-button" type="button">
                                 Floor {{floor}} | status:
-                                <span class="badge rounded-pill text-bg-success">{{ floorInfo.available }}</span> 
                                 <!-- available -->
-                                <span class="badge rounded-pill text-bg-info">{{ floorInfo.cleaning }}</span>
+                                <span class="badge rounded-pill text-bg-success">{{ floorInfo.available }}</span> 
                                 <!-- cleaning -->
-                                <span class="badge rounded-pill text-bg-danger">{{ floorInfo.unavailable }}</span>
+                                <span class="badge rounded-pill text-bg-info">{{ floorInfo.cleaning }}</span>
                                 <!-- unavailable -->
+                                <span class="badge rounded-pill text-bg-danger">{{ floorInfo.unavailable }}</span>
+                                <!-- apartment -->
+                                <span class="badge rounded-pill text-bg-dark">{{ floorInfo.apartment }}</span>
                                 </button>
                             </h2>
                             <div class="accordion-collapse collapse show">
