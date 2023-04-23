@@ -17,8 +17,7 @@ class building(models.Model):
     def __str__(self):
         return self.propertyName
 
-class buildingRoom(models.Model):
-    # 
+class buildingRoom(models.Model): 
     STATUS = (
         ("available", "Available"),
         ("unavailable", "Unavailable"),
@@ -44,7 +43,7 @@ class buildingRoom(models.Model):
     propertyName = models.ForeignKey(building, on_delete=models.CASCADE)
     
     def __str__(self):
-        return str(self.roomNum) + " Floor " + str(self.roomFloor) + " (" + str(self.roomSection) + ") " + str(self.propertyName) + " | " + self.roomStatus
+        return str(self.roomNum) + " " + str(self.roomType) + " Floor " + str(self.roomFloor) + " (" + str(self.roomSection) + ") " + str(self.propertyName) + " | " + self.roomStatus
 
 class priceForRoomType(models.Model):
     roomPricesID = models.AutoField(primary_key=True)
@@ -57,49 +56,31 @@ class priceForRoomType(models.Model):
 class bookingcomReservations(models.Model):
     intReservationId = models.AutoField(primary_key=True)
     extReservationId = models.CharField(max_length=20, null=True, blank=True)
-    # Autoimport from csv
-    propertyName = models.CharField(max_length=15)
-    guestName = models.CharField(max_length=15)
+    propertyName = models.CharField(max_length=15, blank=True)
+    guestName = models.CharField(max_length=30)
     numGuests = models.IntegerField()
     numSingle = models.IntegerField()
     numTwin = models.IntegerField()
-    roomType = models.CharField(max_length=25)
     checkInDate = models.DateField()
     checkOutDate = models.DateField()
-    # Autoimport from csv
     reservationStatus = models.CharField(max_length=15, null=True, blank=True)
     totalPayment = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     commission = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
-    # requires new workarounds to identify the website when dealing with multiple third party booking websites
     listedWebsites = models.ForeignKey(bookingWebsite, on_delete=models.CASCADE, null=True, blank=True)
-    assignedRoom = models.ForeignKey(buildingRoom, null=True, blank=True, on_delete=models.SET_NULL)
     importTime = models.DateField()
     
     def __str__(self):
-        return self.guestName + " | ID: " + str(self.intReservationId) + " | " + str(self.checkInDate) + " - " + str(self.checkOutDate)
+        return self.guestName + " | ID: " + str(self.intReservationId) + " | S: " + str(self.numSingle) + " | T: " + str(self.numTwin) + " | " + str(self.checkInDate) + " - " + str(self.checkOutDate)
     def numNights(self):
         return (self.checkOutDate - self.checkInDate).days
     
-    def assignRoom(self):
-        # get all available rooms of the booked type in the relevant building
-        availableRooms = buildingRoom.objects.filter(
-            propertyName__name=self.propertyName,
-            roomType__roomType=self.assignedRoom,
-            roomStatus='available'
-        )
-
-        # if there are no available rooms, return False
-        if not availableRooms:
-            return False
-
-        # assign the first available room to the reservation
-        assignedRoom = availableRooms.first()
-        assignedRoom.roomStatus = 'unavailable'
-        assignedRoom.save()
-        self.assignedRoom = assignedRoom
-        self.save()
-
-        return True
+class AssignedRoom(models.Model):
+    id = models.AutoField(primary_key=True)
+    reservation = models.ForeignKey(bookingcomReservations, on_delete=models.CASCADE)
+    room = models.ForeignKey(buildingRoom, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return str(self.reservation) + " - " + str(self.room)
     
 class walkinReservations(models.Model):
     PROPERTIES = (
@@ -113,7 +94,7 @@ class walkinReservations(models.Model):
     numGuests = models.IntegerField()
     numRooms = models.IntegerField()
     roomType = models.CharField(max_length=25, choices=buildingRoom.ROOMTYPE, null=True, blank=True)
-    assignedRoom = models.ForeignKey(buildingRoom, null=True, on_delete=models.SET_NULL)
+    assignedRoom = models.ForeignKey(buildingRoom, null=True, blank=True, on_delete=models.SET_NULL)
     checkInDate = models.DateField()
     checkOutDate = models.DateField()
     totalPayment = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)

@@ -4,10 +4,6 @@ from datetime import datetime, timedelta
 from .models import *
 from .forms import *
 
-# import external reservations into django
-def bookingcomCsv(request):
-    csv = open(r'C:\Users\pound\OneDrive\propertyManagementSystem\cleanedScraper11', 'r')
-
 # get today's date
 def getTodayDate():
     currentDate = datetime.now().date()
@@ -22,33 +18,149 @@ def getWeekDates():
             weeklyDates.append(newDate)
     return weeklyDates
 
+def threeMonthDates():
+    allReservationDates = []
+    today = datetime.now().date()
+    threeMonthsFromToday = today + timedelta(days=90)
+
+    while today <= threeMonthsFromToday:
+        allReservationDates.append(today)
+        today += timedelta(days=1)
+    return allReservationDates
+
 # template views
 def baseTemplate(request):
     return render(request, 'base.html')
 
 def getReservations(option):
     today = getTodayDate()
-    allReservationDates = threeMonthDates()
     
-    allReservations = []
+    checkIn = []
+    checkOut = []
     todayCheckIn = []
     todayCheckOut = []
+
+    inBookingcomReservations = bookingcomReservations.objects.filter(checkInDate__gte=today)
+    outBookingcomReservations = bookingcomReservations.objects.filter(checkOutDate__gte=today)
+    inWalkinReservations = walkinReservations.objects.filter(checkInDate__gte=today)
+    outWalkinReservations = walkinReservations.objects.filter(checkOutDate__gte=today)
+    # inReservations = list(inBookingcomReservations) + list(inWalkinReservations)
+    # outReservations = list(outBookingcomReservations) + list(outWalkinReservations)
+
+    for reservation in inBookingcomReservations:
+        assignedRooms = []
+        getAssignedRooms = AssignedRoom.objects.filter(reservation=reservation)
+        assignedRooms = list(getAssignedRooms)
+
+        checkIn.append((reservation, assignedRooms))
+
+        if reservation.checkInDate == today:
+            todayCheckIn.append((reservation, assignedRooms))
+            
+    for reservation in outBookingcomReservations:
+        assignedRooms = []
+        getAssignedRooms = AssignedRoom.objects.filter(reservation=reservation)
+        assignedRooms = list(getAssignedRooms)
+
+        checkOut.append((reservation, assignedRooms))
+
+        if reservation.checkOutDate == today:
+            todayCheckOut.append((reservation, assignedRooms))
+            
+    for reservation in inWalkinReservations:
+        assignedRooms = []
+        getAssignedRooms = [reservation.assignedRoom]
+        assignedRooms = list(getAssignedRooms)
+        
+        checkIn.append((reservation, assignedRooms))
+
+        if reservation.checkOutDate == today:
+            todayCheckIn.append((reservation, assignedRooms))
     
-    for date in allReservationDates:
-        externalBooking = bookingcomReservations.objects.filter(checkInDate__gte=date, checkInDate__lt=date+timedelta(days=1))
-        walkinBooking = walkinReservations.objects.filter(checkInDate__gte=date, checkInDate__lt=date+timedelta(days=1))
-        allReservations.extend(list(externalBooking) + list(walkinBooking))
+    for reservation in outWalkinReservations:
+        assignedRooms = []
+        getAssignedRooms = [reservation.assignedRoom]
+        assignedRooms = list(getAssignedRooms)
         
-        if date == today:
-            todayCheckIn.extend(list(externalBooking) + list(walkinBooking))
-            todayCheckOut.extend(list(bookingcomReservations.objects.filter(checkOutDate=date)) + list(walkinReservations.objects.filter(checkOutDate=date)))
-        
-    if option == 'allReservations':
-        return allReservations
+        checkOut.append((reservation, assignedRooms))
+
+        if reservation.checkOutDate == today:
+            todayCheckOut.append((reservation, assignedRooms))
+
+    if option == 'checkIn':
+        return checkIn
+    elif option == 'checkOut':
+        return checkOut
     elif option == 'todayCheckIn':
         return todayCheckIn
     elif option == 'todayCheckOut':
         return todayCheckOut
+
+def availableRooms():
+    today = getTodayDate()
+
+    # Get all reservations and see how many rooms a reservation will require
+    checkInReservations = bookingcomReservations.objects.filter(checkInDate__gte=today)
+    allReservations = bookingcomReservations.objects.all()
+
+    # Initialize a dictionary to store the number of rooms per type per day for the week
+    rooms_per_type_per_day = {}
+    
+    noAssignedRooms = bookingcomReservations.objects.none() # create empty queryset
+
+    for reservation in checkInReservations:
+        assignedRooms = AssignedRoom.objects.filter(reservation=reservation)
+        if not assignedRooms:
+            noAssignedRooms |= bookingcomReservations.objects.filter(pk=reservation.pk) # add to the queryset
+
+    # Loop through each day of the week
+    for i in range(7):
+        day = today + timedelta(days=i)
+        checkInToday = noAssignedRooms.filter(checkInDate=day) # filter for reservations today
+        checkOutToday = allReservations.filter(checkOutDate=day)
+            
+        # print(singleRooms, twinRooms)
+
+        # For the first day, count the number of reservations and return an output that minuses 
+        # the total number of available rooms with the number of reservations
+        if i == 0:
+            currentSingle = buildingRoom.objects.filter(roomType='Single Bed Room', roomStatus='available').count()
+            currentTwin = buildingRoom.objects.filter(roomType='Twin Bed Room', roomStatus='available').count()
+            
+            for r in checkOutToday:
+                currentSingle += r.numSingle
+                currentTwin += r.numTwin
+                
+            for r in checkInToday:
+                currentSingle -= r.numSingle
+                currentTwin -= r.numTwin
+            
+            rooms_available_today = currentSingle + currentTwin
+            rooms_per_type_per_day[day] = {
+                'Single Bed Room': currentSingle,
+                'Twin Bed Room': currentTwin,
+                'Total Available Rooms': rooms_available_today
+            }
+        else:
+            # If a reservation has the checkOutDate equal to today increase room count accordingly
+            for r in allReservations:
+                if r.checkOutDate == day:
+                    currentSingle += r.numSingle
+                    currentTwin += r.numTwin
+            
+            # If a reservation has their checkInDate equal to today, decrease room count accordingly
+            for r in allReservations:
+                if r.checkInDate == day:
+                    currentSingle -= r.numSingle
+                    currentTwin -= r.numTwin
+
+            # Store the number of rooms per type for today
+            rooms_per_type_per_day[day] = {
+                'Single Bed Room': currentSingle,
+                'Twin Bed Room': currentTwin,
+                'Total Available Rooms': currentSingle + currentTwin
+            }
+    print(rooms_per_type_per_day)
 
 # WEBSITE TEMPLATE VIEWS
 
@@ -68,6 +180,7 @@ def index(request):
         'weeklyDates': getWeekDates(),
         'todayCheckIn': getReservations('todayCheckIn'),
         'todayCheckOut': getReservations('todayCheckOut'),
+        'availableRooms': availableRooms(),
         'numCheckIn': numCheckIn,
         'numCheckOut': numCheckOut,
     }
@@ -77,8 +190,8 @@ def buildingStatus(option):
     paraisoFloorRooms = {}
     toClean = []
     paraisoRoomStatus = {'available': 0, 'unavailable': 0, 'cleaning': 0, 'apartment': 0}
-    roomTypeCount = {'Single Bed Room': 0, 'Twin Bed Room': 0}
-    roomNumbers = {'Single Bed Room': [], 'Twin Bed Room': []}
+    roomTypeCount = {'single': 0, 'twin': 0}
+    roomNumbers = {'single': [], 'twin': []}
 
     for room in buildingRoom.objects.all().values('roomNum', 'roomFloor', 'roomStatus', 'roomType'):
         floorNum = room['roomFloor']
@@ -88,12 +201,12 @@ def buildingStatus(option):
         # Counts only the number of room types that are available and appends the room number
         if room['roomType'] == 'Single Bed Room':
             if room['roomStatus'] == 'available':
-                roomTypeCount['Single Bed Room'] += 1
-                roomNumbers['Single Bed Room'].append(room['roomNum'])
+                roomTypeCount['single'] += 1
+                roomNumbers['single'].append(room['roomNum'])
         elif room['roomType'] == 'Twin Bed Room':
             if room['roomStatus'] == 'available':
-                roomTypeCount['Twin Bed Room'] += 1
-                roomNumbers['Twin Bed Room'].append(room['roomNum'])
+                roomTypeCount['twin'] += 1
+                roomNumbers['twin'].append(room['roomNum'])
         
         # Iterates through floors of the building and collects and their information
         paraisoFloorRooms[floorNum]['rooms'].append(room)
@@ -121,6 +234,24 @@ def buildingStatus(option):
         return roomTypeCount
     elif option == 'roomNumbers':
         return roomNumbers
+    
+def roomStatus(request):
+    if request.method == 'POST':
+        form = cleaningForm(request.POST)
+        if form.is_valid():
+            roomNum = form.cleaned_data['roomNum']
+            roomNum.update(roomStatus='available')
+    else:
+        form = cleaningForm()
+    
+    context = {
+        'paraisoFloorRooms': buildingStatus('floorRoom'),
+        'paraisoRoomStatus': buildingStatus('roomStatus'),
+        'paraisoRoomTypeCount': buildingStatus('roomTypeCount'),
+        'toClean': buildingStatus('toClean'),
+        'form': form,
+    }
+    return render(request, 'roomStatus.html', context)
 
 # AJAX QUERY SHOW ROOM TYPE
 def loadSelectRoom(request):
@@ -179,23 +310,6 @@ def walkinReservation(request):
     
     return render(request, 'walkinReservation.html', context)
 
-def roomStatus(request):
-    if request.method == 'POST':
-        form = cleaningForm(request.POST)
-        if form.is_valid():
-            roomNum = form.cleaned_data['roomNum']
-            roomNum.update(roomStatus='available')
-    else:
-        form = cleaningForm()
-    
-    context = {
-        'paraisoFloorRooms': buildingStatus('floorRoom'),
-        'paraisoRoomStatus': buildingStatus('roomStatus'),
-        'toClean': buildingStatus('toClean'),
-        'form': form,
-    }
-    return render(request, 'roomStatus.html', context)
-
 def quotaConditions(request):
     
     totalHotelRooms = len(buildingRoom.objects.filter(roomSection='Hotel'))
@@ -251,15 +365,6 @@ def editQuotaConditions(request):
     return render(request, 'editQuotaConditions.html', context)
 
 # allReservations TEMPLATE
-def threeMonthDates():
-    allReservationDates = []
-    today = datetime.now().date()
-    threeMonthsFromToday = today + timedelta(days=90)
-
-    while today <= threeMonthsFromToday:
-        allReservationDates.append(today)
-        today += timedelta(days=1)
-    return allReservationDates
 
 def allReservations(request):
     
@@ -267,6 +372,7 @@ def allReservations(request):
         'currentDate': getTodayDate(),
         'weeklyDates': getWeekDates(),
         'threeMonthDates': threeMonthDates(),
-        'threeMonthsReservations':getReservations('allReservations'),
+        'threeMonthIn':getReservations('checkIn'),
+        'threeMonthOut':getReservations('checkOut'),
     }
     return render(request, 'allReservations.html', context)

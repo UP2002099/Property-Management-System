@@ -11,34 +11,91 @@
                 </div>
             </div>
         </div>
+
+        <!-- reservations -->
         {% for day in threeMonthDates %}
             <div class="card mb-3">
-                <div class="card-body px-3 pt-2 pb-2">
+                <div class="card-body">
                     <!-- card header -->
                     <div class="row">
                         <div class="col">
-                            <h3 class="card-title">{{day}}</h3>
+                            <h2 class="card-title">{{day}}</h2>
                         </div>
                     </div>
-                    {% for reservation in threeMonthsReservations %}
+                
+                    <!-- check-in section -->
+                    <h3 class="card-title">Check-In</h3>
+                    {% for reservation, assignedRooms in threeMonthIn %}
                         {% if reservation.checkInDate == day %}
                             <!-- guest info card -->
                             <div class="card mb-3">
                                 <div class="card-body">
 
                                     {% if reservation.website  == "Internal booking" %} 
-                                        <h5 class="card-title">{{ reservation.guestFirstName }} {{ reservation.guestLastName }}</h5>
+                                        <h5 class="card-title">
+                                            {{ reservation.guestFirstName }} {{ reservation.guestLastName }}
+                                        </h5>
                                     {% else %}
-                                        <h5 class="card-title">{{ reservation.guestName }}</h5>
+                                        <h5 class="card-title">
+                                            {{ reservation.guestName }}
+                                        </h5>
                                     {% endif %}
 
-                                    <h6 class="card-title">Check-out: {{ reservation.checkOutDate }}</h6>
-                                    <h6 class="card-subtitle mb-2 text-muted">{{ reservation.numNights }} night(s) | Room {{ reservation.assignedRoom.pk }} | {{ reservation.roomType }}</h6>
+                                    <h6 class="card-title">Check-in: {{reservation.checkInDate}}</h6>
+                                    {% for room in assignedRooms %}
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            {{reservation.numNights}} nights | Room {{ room.room.roomNum }} | {{ room.room.roomType }}
+                                        </h6>
+                                    {% endfor %}
                                     
                                     {% if reservation.website  == "Internal booking" %}
-                                        <h6 class="card-subtitle"><a href="#" class="card-link">ID: {{ reservation.intReservationId }} | {{ reservation.website }}</a></h6>
+                                        <h6 class="card-subtitle"><a href="#" class="card-link">
+                                            ID: {{ reservation.intReservationId }} | {{ reservation.website }}
+                                        </a></h6>
                                     {% else %}
-                                        <h6 class="card-subtitle"><a href="#" class="card-link">Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.listedWebsites }}</a></h6>
+                                        <h6 class="card-subtitle"><a href="#" class="card-link">
+                                            Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}
+                                        </a></h6>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- check-out section -->
+                    <hr>
+                    <h3 class="card-title">Check-Out</h3>
+                    {% for reservation, assignedRooms in threeMonthOut %}
+                        {% if reservation.checkOutDate == day %}
+                            <!-- guest info card -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+
+                                    {% if reservation.website  == "Internal booking" %} 
+                                        <h5 class="card-title">
+                                            {{ reservation.guestFirstName }} {{ reservation.guestLastName }}
+                                        </h5>
+                                    {% else %}
+                                        <h5 class="card-title">
+                                            {{ reservation.guestName }}
+                                        </h5>
+                                    {% endif %}
+
+                                    <h6 class="card-title">Check-Out: {{reservation.checkOutDate}}</h6>
+                                    {% for room in assignedRooms %}
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            {{reservation.numNights}} nights | Room {{ room.room.roomNum }} | {{ room.room.roomType }}
+                                        </h6>
+                                    {% endfor %}
+                                    
+                                    {% if reservation.website  == "Internal booking" %}
+                                        <h6 class="card-subtitle"><a href="#" class="card-link">
+                                            ID: {{ reservation.intReservationId }} | {{ reservation.website }}
+                                        </a></h6>
+                                    {% else %}
+                                        <h6 class="card-subtitle"><a href="#" class="card-link">
+                                            Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}
+                                        </a></h6>
                                     {% endif %}
                                 </div>
                             </div>
