@@ -42,11 +42,20 @@
                                     {% endif %}
 
                                     <h6 class="card-title">Check-in: {{reservation.checkInDate}}</h6>
-                                    {% for room in assignedRooms %}
-                                        <h6 class="card-subtitle mb-2 text-muted">
-                                            {{reservation.numNights}} nights | Room {{ room.room.roomNum }} | {{ room.room.roomType }}
-                                        </h6>
-                                    {% endfor %}
+
+                                    {% if reservation.website  == "Internal booking" %} 
+                                        {% for room in assignedRooms %}
+                                            <h6 class="card-subtitle mb-2 text-muted">
+                                                {{ reservation.numNights }} nights | Room {{ room.roomNum }} | {{ room.roomType }}
+                                            </h6>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for room in assignedRooms %}
+                                            <h6 class="card-subtitle mb-2 text-muted">
+                                                {{ reservation.numNights }} nights | Room {{ room.room.roomNum }} | {{ room.room.roomType }}
+                                            </h6>
+                                        {% endfor %}
+                                    {% endif %}
                                     
                                     {% if reservation.website  == "Internal booking" %}
                                         <h6 class="card-subtitle"><a href="#" class="card-link">
@@ -57,6 +66,7 @@
                                             Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}
                                         </a></h6>
                                     {% endif %}
+
                                 </div>
                             </div>
                         {% endif %}
@@ -82,11 +92,20 @@
                                     {% endif %}
 
                                     <h6 class="card-title">Check-Out: {{reservation.checkOutDate}}</h6>
-                                    {% for room in assignedRooms %}
-                                        <h6 class="card-subtitle mb-2 text-muted">
-                                            {{reservation.numNights}} nights | Room {{ room.room.roomNum }} | {{ room.room.roomType }}
-                                        </h6>
-                                    {% endfor %}
+
+                                    {% if reservation.website  == "Internal booking" %} 
+                                        {% for room in assignedRooms %}
+                                            <h6 class="card-subtitle mb-2 text-muted">
+                                                {{ reservation.numNights }} nights | Room {{ room.roomNum }} | {{ room.roomType }}
+                                            </h6>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for room in assignedRooms %}
+                                            <h6 class="card-subtitle mb-2 text-muted">
+                                                {{ reservation.numNights }} nights | Room {{ room.room.roomNum }} | {{ room.room.roomType }}
+                                            </h6>
+                                        {% endfor %}
+                                    {% endif %}
                                     
                                     {% if reservation.website  == "Internal booking" %}
                                         <h6 class="card-subtitle"><a href="#" class="card-link">
@@ -97,6 +116,7 @@
                                             Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}
                                         </a></h6>
                                     {% endif %}
+                                    
                                 </div>
                             </div>
                         {% endif %}

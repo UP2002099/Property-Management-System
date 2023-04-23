@@ -44,7 +44,7 @@
                                 {% if reservation.website  == "Internal booking" %} 
                                     {% for room in assignedRooms %}
                                         <h6 class="card-subtitle mb-2 text-muted">
-                                            {{ reservation.numNights }} nights | Room {{ room }} | {{ room }}
+                                            {{ reservation.numNights }} nights | Room {{ room.roomNum }} | {{ room.roomType }}
                                         </h6>
                                     {% endfor %}
                                 {% else %}
@@ -64,6 +64,7 @@
                                         Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}
                                     </a></h6>
                                 {% endif %}
+                                
                             </div>
                         </div>
                     {% endfor %}
@@ -108,7 +109,7 @@
                                 {% if reservation.website  == "Internal booking" %} 
                                     {% for room in assignedRooms %}
                                         <h6 class="card-subtitle mb-2 text-muted">
-                                            {{ reservation.numNights }} nights | Room {{ room }} | {{ room }}
+                                            {{ reservation.numNights }} nights | Room {{ room.roomNum }} | {{ room.roomType }}
                                         </h6>
                                     {% endfor %}
                                 {% else %}

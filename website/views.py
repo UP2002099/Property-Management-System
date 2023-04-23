@@ -44,8 +44,6 @@ def getReservations(option):
     outBookingcomReservations = bookingcomReservations.objects.filter(checkOutDate__gte=today)
     inWalkinReservations = walkinReservations.objects.filter(checkInDate__gte=today)
     outWalkinReservations = walkinReservations.objects.filter(checkOutDate__gte=today)
-    # inReservations = list(inBookingcomReservations) + list(inWalkinReservations)
-    # outReservations = list(outBookingcomReservations) + list(outWalkinReservations)
 
     for reservation in inBookingcomReservations:
         assignedRooms = []
@@ -96,19 +94,23 @@ def getReservations(option):
     elif option == 'todayCheckOut':
         return todayCheckOut
 
+# note: NO WALKIN RESERVATION AS WALKINS REQUIRE AN AVAILABLE ROOM TO BE ABLE TO MAKE A RESERVATION!!!!!!!! 
 def availableRooms():
     today = getTodayDate()
 
-    # Get all reservations and see how many rooms a reservation will require
+    # get all reservations that have checkindate greater or equal to today
     checkInReservations = bookingcomReservations.objects.filter(checkInDate__gte=today)
+    
+    # get all reservations - for checkoutdate (very long stays)
     allReservations = bookingcomReservations.objects.all()
 
-    # Initialize a dictionary to store the number of rooms per type per day for the week
-    rooms_per_type_per_day = {}
+    roomTypePerDay = {}
     
-    noAssignedRooms = bookingcomReservations.objects.none() # create empty queryset
+    # empty queryset
+    noAssignedRooms = bookingcomReservations.objects.none()
 
     for reservation in checkInReservations:
+        # reservations that have assigned rooms will be excluded as roomStatus will be 'unavailable'
         assignedRooms = AssignedRoom.objects.filter(reservation=reservation)
         if not assignedRooms:
             noAssignedRooms |= bookingcomReservations.objects.filter(pk=reservation.pk) # add to the queryset
@@ -116,10 +118,8 @@ def availableRooms():
     # Loop through each day of the week
     for i in range(7):
         day = today + timedelta(days=i)
-        checkInToday = noAssignedRooms.filter(checkInDate=day) # filter for reservations today
+        checkInToday = noAssignedRooms.filter(checkInDate=day)
         checkOutToday = allReservations.filter(checkOutDate=day)
-            
-        # print(singleRooms, twinRooms)
 
         # For the first day, count the number of reservations and return an output that minuses 
         # the total number of available rooms with the number of reservations
@@ -127,19 +127,22 @@ def availableRooms():
             currentSingle = buildingRoom.objects.filter(roomType='Single Bed Room', roomStatus='available').count()
             currentTwin = buildingRoom.objects.filter(roomType='Twin Bed Room', roomStatus='available').count()
             
+            # checkout = guest return rooms
             for r in checkOutToday:
                 currentSingle += r.numSingle
                 currentTwin += r.numTwin
-                
+            
+            # checkin = guest take rooms
             for r in checkInToday:
                 currentSingle -= r.numSingle
                 currentTwin -= r.numTwin
-            
-            rooms_available_today = currentSingle + currentTwin
-            rooms_per_type_per_day[day] = {
+
+            # append to dictionary
+            totalAvailable = currentSingle + currentTwin
+            roomTypePerDay[day] = {
                 'Single Bed Room': currentSingle,
                 'Twin Bed Room': currentTwin,
-                'Total Available Rooms': rooms_available_today
+                'Total Available Rooms': totalAvailable
             }
         else:
             # If a reservation has the checkOutDate equal to today increase room count accordingly
@@ -155,12 +158,12 @@ def availableRooms():
                     currentTwin -= r.numTwin
 
             # Store the number of rooms per type for today
-            rooms_per_type_per_day[day] = {
+            roomTypePerDay[day] = {
                 'Single Bed Room': currentSingle,
                 'Twin Bed Room': currentTwin,
                 'Total Available Rooms': currentSingle + currentTwin
             }
-    print(rooms_per_type_per_day)
+    return roomTypePerDay
 
 # WEBSITE TEMPLATE VIEWS
 

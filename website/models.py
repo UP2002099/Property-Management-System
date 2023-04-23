@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class bookingWebsite(models.Model):
     websiteID = models.AutoField(primary_key=True)
@@ -91,8 +92,8 @@ class walkinReservations(models.Model):
     propertyName = models.CharField(max_length=15, choices=PROPERTIES)
     guestFirstName = models.CharField(max_length=15)
     guestLastName = models.CharField(max_length=15)
-    numGuests = models.IntegerField()
-    numRooms = models.IntegerField()
+    numGuests = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(2)])
+    numRooms = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(1)])
     roomType = models.CharField(max_length=25, choices=buildingRoom.ROOMTYPE, null=True, blank=True)
     assignedRoom = models.ForeignKey(buildingRoom, null=True, blank=True, on_delete=models.SET_NULL)
     checkInDate = models.DateField()
@@ -103,6 +104,7 @@ class walkinReservations(models.Model):
         return self.guestFirstName + " " + self.guestLastName + " | ID: " + str(self.intReservationId) + " | " + str(self.checkInDate) + " - " + str(self.checkOutDate)
     def numNights(self):
         return (self.checkOutDate - self.checkInDate).days
+    
     # FOR allReservations.html reservation.website, parity with reservationModel
     def website(self):
         return ("Internal booking")
