@@ -12,5 +12,5 @@ urlpatterns = [
     path('editQuotaConditions/', views.editQuotaConditions, name='editQuotaConditions'),
     path('loadSelectRoom/', views.loadSelectRoom, name='loadSelectRoom'),
     path('loadSelectRoomPrice/', views.loadSelectRoomPrice, name='loadSelectRoomPrice'),
-    path('loaderio-bc96bfa09c42c1a4d4c6e65bb3cf5ffe', views.loadtester, name='loadtester'),
+    path('loaderio-bc96bfa09c42c1a4d4c6e65bb3cf5ffe/', views.loadtester, name='loadtester'),
 ]
