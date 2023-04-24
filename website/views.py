@@ -163,6 +163,9 @@ def availableRooms(option):
     elif option == 'currentTotal':
         return currentTotal
 
+def loadtester(request):
+    return render(request, 'loaderio-bc96bfa09c42c1a4d4c6e65bb3cf5ffe.html')
+
 # WEBSITE TEMPLATE VIEWS
 
 def index(request):
