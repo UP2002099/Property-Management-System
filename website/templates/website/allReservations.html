@@ -24,7 +24,9 @@
                     </div>
                 
                     <!-- check-in section -->
-                    <h3 class="card-title">Check-In</h3>
+                    <p class="fs-1">
+                        <span class="badge rounded-pill bg-info">Check-In</span>
+                    </p>
                     {% for reservation, assignedRooms in threeMonthIn %}
                         {% if reservation.checkInDate == day %}
                             <!-- guest info card -->
@@ -74,7 +76,9 @@
 
                     <!-- check-out section -->
                     <hr>
-                    <h3 class="card-title">Check-Out</h3>
+                    <p class="fs-1">
+                        <span class="badge rounded-pill bg-info">Check-Out</span>
+                    </p>
                     {% for reservation, assignedRooms in threeMonthOut %}
                         {% if reservation.checkOutDate == day %}
                             <!-- guest info card -->

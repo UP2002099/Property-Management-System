@@ -64,7 +64,7 @@
                                         Booking number: {{ reservation.extReservationId }}, ID: {{ reservation.intReservationId }} | {{ reservation.website }}
                                     </a></h6>
                                 {% endif %}
-                                
+
                             </div>
                         </div>
                     {% endfor %}
@@ -147,21 +147,65 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Building name</th>
-                            {% for date in weeklyDates %}
-                                <th scope="col">{{ date }}</th>
+                            <th scope="col" class="card-title h5">Building name</th>
+                            {% for date, _ in availableRooms.items %}
+                                {% if date == currentDate %}
+                                    <th scope="col" class="first h5">{{ date }}</th>
+                                {% else %}
+                                    <th scope="col" class="h5">{{ date }}</th>
+                                {% endif %}
                             {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Paraiso</th>
-                            {% for date in weeklyDates %}
-                                {% for availability in roomAvailability %}
-                                    {% if availability.date == date %}
-                                        <td>{{ availability.roomType }} {{ availability.count }}</td>
+                            <th scope="row" class="h5">Paraiso</th>
+                            {% for _, data in availableRooms.items %}
+                                <td>
+
+                                    {% if data.single == 0 %}
+                                    <h5>
+                                        <span class="badge rounded-pill bg-danger larger">
+                                            Single: {{ data.single }}
+                                        </span>
+                                    </h5>
+                                    {% else %}
+                                    <h5>
+                                        <span class="badge rounded-pill bg-success">
+                                            Single: {{ data.single }}
+                                        </span>
+                                    </h5>
                                     {% endif %}
-                                {% endfor %}
+
+                                    {% if data.twin == 0 %}
+                                    <h5>
+                                        <span class="badge rounded-pill bg-danger">
+                                            Twin: {{ data.twin }}
+                                        </span>
+                                    </h5>
+                                    {% else %}
+                                    <h5>
+                                        <span class="badge rounded-pill bg-success">
+                                            Twin: {{ data.twin }}
+                                        </span>
+                                    </h5>
+                                    {% endif %}
+
+                                    {% if data.total == 0 %}
+                                    <h5>
+                                        <span class="badge rounded-pill bg-danger">
+                                            Total: {{ data.total }}
+                                        </span>
+                                    </h5>
+                                    {% else %}
+                                    <h5>
+                                        <span class="badge rounded-pill bg-success">
+                                            Total: {{ data.total }}
+                                        </span>
+                                    </h5>
+                                    {% endif %}
+
+                                </td>
                             {% endfor %}
                         </tr>
                     </tbody>
@@ -178,7 +222,11 @@
                         <div class="row">
                             <div class="col">
                                 <div class="row">
-                                    <h4 class="card-title">Booking.com <span class="badge rounded-pill bg-info">current available rooms</span></h4>
+                                    <h4 class="card-title">Booking.com 
+                                        <span class="badge rounded-pill bg-info">
+                                            {{ currentTotal }} / 19
+                                        </span>
+                                    </h4>
                                 </div>
                             </div>
                         </div>

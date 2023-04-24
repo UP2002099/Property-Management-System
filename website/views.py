@@ -9,15 +9,6 @@ def getTodayDate():
     currentDate = datetime.now().date()
     return currentDate
 
-# get a week's worth of dates and the current date
-def getWeekDates():
-    weeklyDates = []
-    for i in range(0, 8):
-        if i <= 8:
-            newDate = getTodayDate() + timedelta(days=i)
-            weeklyDates.append(newDate)
-    return weeklyDates
-
 def threeMonthDates():
     allReservationDates = []
     today = datetime.now().date()
@@ -95,7 +86,7 @@ def getReservations(option):
         return todayCheckOut
 
 # note: NO WALKIN RESERVATION AS WALKINS REQUIRE AN AVAILABLE ROOM TO BE ABLE TO MAKE A RESERVATION!!!!!!!! 
-def availableRooms():
+def availableRooms(option):
     today = getTodayDate()
 
     # get all reservations that have checkindate greater or equal to today
@@ -103,7 +94,7 @@ def availableRooms():
     
     # get all reservations - for checkoutdate (very long stays)
     allReservations = bookingcomReservations.objects.all()
-
+    
     roomTypePerDay = {}
     
     # empty queryset
@@ -116,8 +107,9 @@ def availableRooms():
             noAssignedRooms |= bookingcomReservations.objects.filter(pk=reservation.pk) # add to the queryset
 
     # Loop through each day of the week
-    for i in range(7):
+    for i in range(8):
         day = today + timedelta(days=i)
+        print(day)
         checkInToday = noAssignedRooms.filter(checkInDate=day)
         checkOutToday = allReservations.filter(checkOutDate=day)
 
@@ -138,12 +130,14 @@ def availableRooms():
                 currentTwin -= r.numTwin
 
             # append to dictionary
-            totalAvailable = currentSingle + currentTwin
             roomTypePerDay[day] = {
-                'Single Bed Room': currentSingle,
-                'Twin Bed Room': currentTwin,
-                'Total Available Rooms': totalAvailable
+                'single': currentSingle,
+                'twin': currentTwin,
+                'total': currentSingle + currentTwin
             }
+            
+            currentTotal = currentSingle + currentTwin
+            
         else:
             # If a reservation has the checkOutDate equal to today increase room count accordingly
             for r in allReservations:
@@ -159,11 +153,15 @@ def availableRooms():
 
             # Store the number of rooms per type for today
             roomTypePerDay[day] = {
-                'Single Bed Room': currentSingle,
-                'Twin Bed Room': currentTwin,
-                'Total Available Rooms': currentSingle + currentTwin
+                'single': currentSingle,
+                'twin': currentTwin,
+                'total': currentSingle + currentTwin
             }
-    return roomTypePerDay
+    
+    if option == 'weekly':
+        return roomTypePerDay
+    elif option == 'currentTotal':
+        return currentTotal
 
 # WEBSITE TEMPLATE VIEWS
 
@@ -180,10 +178,10 @@ def index(request):
     
     context = {
         'currentDate': getTodayDate(),
-        'weeklyDates': getWeekDates(),
         'todayCheckIn': getReservations('todayCheckIn'),
         'todayCheckOut': getReservations('todayCheckOut'),
-        'availableRooms': availableRooms(),
+        'availableRooms': availableRooms('weekly'),
+        'currentTotal': availableRooms('currentTotal'),
         'numCheckIn': numCheckIn,
         'numCheckOut': numCheckOut,
     }
@@ -342,11 +340,11 @@ def editQuotaConditions(request):
             'rooms': []
         }
         for room in rooms:
-            room_data = {
+            roomData = {
                 'room_num': room.roomNum,
                 'room_price': roomType.roomPrice
             }
-            roomTypeData['rooms'].append(room_data)
+            roomTypeData['rooms'].append(roomData)
         data.append(roomTypeData)
 
     if request.method == 'POST':
@@ -373,7 +371,6 @@ def allReservations(request):
     
     context = {
         'currentDate': getTodayDate(),
-        'weeklyDates': getWeekDates(),
         'threeMonthDates': threeMonthDates(),
         'threeMonthIn':getReservations('checkIn'),
         'threeMonthOut':getReservations('checkOut'),
