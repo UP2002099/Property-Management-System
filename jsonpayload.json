@@ -1,0 +1,24 @@
+{
+  "keys": ["propertyName","guestFirstName","guestLastName","numGuests","numRooms","roomType","assignedRoom","checkInDate","checkOutDate"],
+  "values": [
+    ["Paraiso", "John", "Doe", 2, 1, "Single Bed Room", "101", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Jane", "Doe", 2, 1, "Single Bed Room", "107", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Alice", "Smith", 2, 1, "Single Bed Room", "109", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Bob", "Johnson", 2, 1, "Single Bed Room", "111", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Emily", "Wilson", 2, 1, "Single Bed Room", "201", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Peter", "Wang", 2, 1, "Single Bed Room", "302", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Karen", "Lee", 2, 1, "Single Bed Room", "306", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Tom", "Smith", 2, 1, "Single Bed Room", "312", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Olivia", "Johnson", 2, 1, "Single Bed Room", "401", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Jacob", "Wilson", 2, 1, "Single Bed Room", "403", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Sophia", "Wang", 2, 1, "Single Bed Room", "504", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "William", "Lee", 2, 1, "Single Bed Room", "507", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Ava", "Smith", 2, 1, "Single Bed Room", "508", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Michael", "Johnson", 2, 1, "Single Bed Room", "509", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Emma", "Wilson", 2, 1, "Twin Bed Room", "102", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "David", "Wang", 2, 1, "Twin Bed Room", "108", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Isabella", "Lee", 2, 1, "Twin Bed Room", "110", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Samuel", "William", 2, 1, "Twin Bed Room", "212", "2023-09-09", "2023-10-10"],
+    ["Paraiso", "Daniel", "Davidson", 2, 1, "Twin Bed Room", "408", "2023-09-09", "2023-10-10"]
+  ]
+}
