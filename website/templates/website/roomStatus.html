@@ -24,6 +24,10 @@
                     <input class="form-check-input" type="radio" id="unavailable" checked>
                     <label class="form-check-label">Unavailable</label>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-evenly">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" id="apartment" checked>
                     <label class="form-check-label">Apartment</label>
@@ -40,7 +44,7 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <h3 class="page-header mb-3 d-flex justify-content-center">Building
+                        <h3 class="page-header mb-3 d-flex justify-content-center">
                             <!-- available -->
                             <span class="badge rounded-pill text-bg-success">{{ paraisoRoomStatus.available }}</span> 
                             <!-- cleaning -->
@@ -107,7 +111,10 @@
                 </div>
             </div>
             <div class="col">
-                <h3 class="page-header mb-3 d-flex justify-content-center">Rooms to clean</h3>
+                <h3 class="page-header mb-3 d-flex justify-content-center">
+                    <!-- cleaning -->
+                    <span class="badge rounded-pill text-bg-info">{{ paraisoRoomStatus.cleaning }}</span>
+                </h3>
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
