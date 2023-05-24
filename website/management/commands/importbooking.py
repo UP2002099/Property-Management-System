@@ -8,20 +8,9 @@ from django.db.models import Q
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        with open(r'C:\Users\pound\OneDrive\propertyManagementSystem\apr27_may03.csv', 'r', encoding='utf-8') as csvfile:
+        with open(r'C:\Users\pound\OneDrive\propertyManagementSystem\may24_jun14.csv', 'r', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
             rowHeader = next(reader)
-            
-            # rename original header rows
-            # rowHeader[0] = 'guestName'
-            # rowHeader[1] = 'numGuests'
-            # rowHeader[2] = 'checkInDate'
-            # rowHeader[3] = 'checkOutDate'
-            # rowHeader[4] = 'resRoomType'
-            # rowHeader[5] = 'reservationStatus'
-            # rowHeader[6] = 'totalPayment'
-            # rowHeader[7] = 'commission'
-            # rowHeader[8] = 'extReservationId'
             
             rowHeader[0] = 'guestName'
             rowHeader[1] = 'numGuests'
@@ -71,14 +60,12 @@ class Command(BaseCommand):
                         elif ',' in resRoomType: # Twin Bed Room is always at the back
                             numTwin = int(resRoomType.split(',')[1].split()[0]) # [2 x Single Bed Room, 3 x Twin Bed Room]: numTwin = 3
                             
-                    
-                    
                     # if row[9] == 'Smart Flex':
                         # place row 9 into row 5 - row 5 is always empty is 'Smart Flex' is in row 9
                         # row[5] = row[9]
                         
-                    convertedCheckInDate = datetime.strptime(row[2], '%b %d, %Y')
-                    convertedCheckOutDate = datetime.strptime(row[3], '%b %d, %Y')
+                    convertedCheckInDate = datetime.strptime(row[2], '%d-%b-%y')
+                    convertedCheckOutDate = datetime.strptime(row[3], '%d-%b-%y')
                     
                     for i in range(9):
                         print(rowHeader[i], row[i])

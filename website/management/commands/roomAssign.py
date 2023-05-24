@@ -5,8 +5,6 @@ from website.models import *
 import pytz
 
 class Command(BaseCommand):
-    help = 'Assign rooms to reservations based on number of single and twin beds'
-
     def handle(self, *args, **options):
         today = date.today()
 
